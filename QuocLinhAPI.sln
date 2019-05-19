@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.645
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "QuocLinhAPI", "QuocLinhAPI\QuocLinhAPI.csproj", "{8FCE32BD-F951-4CB3-A709-57AC5946CB44}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "BUS", "BUS\BUS.csproj", "{BFBFA807-E93F-4A79-97BD-7F87D39C9A04}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8FCE32BD-F951-4CB3-A709-57AC5946CB44}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8FCE32BD-F951-4CB3-A709-57AC5946CB44}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8FCE32BD-F951-4CB3-A709-57AC5946CB44}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8FCE32BD-F951-4CB3-A709-57AC5946CB44}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFBFA807-E93F-4A79-97BD-7F87D39C9A04}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFBFA807-E93F-4A79-97BD-7F87D39C9A04}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFBFA807-E93F-4A79-97BD-7F87D39C9A04}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFBFA807-E93F-4A79-97BD-7F87D39C9A04}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C2791D0E-57A5-4333-9926-066F18021B4F}
+	EndGlobalSection
+EndGlobal

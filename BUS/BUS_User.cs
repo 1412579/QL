@@ -46,6 +46,11 @@ namespace BUS
             return ctx_library.Instance.Insert<User>(dto);
         }
 
+        public List<User> GetAll()
+        {
+            return ctx_library.Instance.GetAll<User>().ToList();
+        }
+
         public int CheckExistUsername(string username)
         {
             var dto = ctx_library.Instance.GetAll<User>().Where(c => c.UserName.ToLower() == username.ToLower()).FirstOrDefault();

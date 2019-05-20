@@ -65,7 +65,7 @@
                                     <a><i class="fa fa-desktop"></i> Quản lý tài khoản<span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li>@Html.ActionLink("Thêm tài khoản","AddEdit","Login")</li>
-                                        <li><a asp-controller="Category" asp-action="Listing">Danh sách ngành hàng</a></li>
+                                        <li>@Html.ActionLink("Danh sách tài khoản", "Listing", "Login")</li>
                                     </ul>
                                 </li>
                                 @*<li>

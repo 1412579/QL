@@ -20,6 +20,12 @@ namespace QuocLinhAPI.Controllers
             return View();
         }
 
+        public ActionResult Listing()
+        {
+            var model = BUS_User.Instance.GetAll();
+            return View(model);
+        }
+
         [HttpPost]
         public ActionResult Index(string username, string password, string url)
         {
@@ -66,13 +72,14 @@ namespace QuocLinhAPI.Controllers
 
         public ActionResult IsLogged()
         {
-            if (Session["user"] == null)
-            {
-                Response.Redirect("~/Login");
-            }
+            //if (Session["user"] == null)
+            //{
+            //    Response.Redirect("~/Login");
+            //}
             return Content("");
         }
 
+        
 
     }
 }

@@ -35,6 +35,7 @@
 
 </head>
 <body class="nav-md">
+    @Html.Action("IsLogged","Login")
     <div class="container body">
         <div class="main_container">
             <div class="col-md-3 left_col">
@@ -61,13 +62,13 @@
                             @*<h3>General</h3>*@
                             <ul class="nav side-menu">
                                 <li>
-                                    <a><i class="fa fa-desktop"></i> Quản lý ngành hàng<span class="fa fa-chevron-down"></span></a>
+                                    <a><i class="fa fa-desktop"></i> Quản lý tài khoản<span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
-                                        <li><a asp-controller="Category" asp-action="AddEdit">Thêm ngành hàng mới</a></li>
+                                        <li>@Html.ActionLink("Thêm tài khoản","AddEdit","Login")</li>
                                         <li><a asp-controller="Category" asp-action="Listing">Danh sách ngành hàng</a></li>
                                     </ul>
                                 </li>
-                                <li>
+                                @*<li>
                                     <a><i class="fa fa-bar-chart-o"></i> Quản lý đơn vị<span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">
                                         <li><a asp-controller="Unit" asp-action="AddEdit">Thêm đơn vị mới</a></li>
@@ -80,7 +81,7 @@
                                         <li><a asp-controller="Product" asp-action="AddEdit">Thêm sản phẩm</a></li>
                                         <li><a asp-controller="Product" asp-action="Listing">Danh sách sản phẩm</a></li>
                                     </ul>
-                                </li>
+                                </li>*@
                                 @*<li>
                                     <a><i class="fa fa-edit"></i> Forms <span class="fa fa-chevron-down"></span></a>
                                     <ul class="nav child_menu">

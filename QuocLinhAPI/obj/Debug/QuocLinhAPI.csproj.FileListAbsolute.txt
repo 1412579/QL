@@ -74,3 +74,10 @@ D:\Works\Freelancer\QLAPI\QuocLinhAPI\QuocLinhAPI\obj\Debug\QuocLinhAPI.csproj.C
 D:\Works\Freelancer\QLAPI\QuocLinhAPI\QuocLinhAPI\obj\Debug\QuocLinhAPI.csproj.CopyComplete
 D:\Works\Freelancer\QLAPI\QuocLinhAPI\QuocLinhAPI\obj\Debug\QuocLinhAPI.dll
 D:\Works\Freelancer\QLAPI\QuocLinhAPI\QuocLinhAPI\obj\Debug\QuocLinhAPI.pdb
+D:\Works\Freelancer\QLAPI\QuocLinhAPI\QuocLinhAPI\bin\BUS.dll
+D:\Works\Freelancer\QLAPI\QuocLinhAPI\QuocLinhAPI\bin\EntityFramework.dll
+D:\Works\Freelancer\QLAPI\QuocLinhAPI\QuocLinhAPI\bin\BUS.pdb
+D:\Works\Freelancer\QLAPI\QuocLinhAPI\QuocLinhAPI\bin\BUS.dll.config
+D:\Works\Freelancer\QLAPI\QuocLinhAPI\QuocLinhAPI\bin\EntityFramework.xml
+D:\Works\Freelancer\QLAPI\QuocLinhAPI\QuocLinhAPI\bin\EntityFramework.SqlServer.dll
+D:\Works\Freelancer\QLAPI\QuocLinhAPI\QuocLinhAPI\bin\EntityFramework.SqlServer.xml

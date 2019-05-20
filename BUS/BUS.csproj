@@ -88,6 +88,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
     <Content Include="QL.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
       <DependentUpon>QL.edmx</DependentUpon>
@@ -98,9 +101,6 @@
       <DependentUpon>QL.edmx</DependentUpon>
       <LastGenOutput>QL.cs</LastGenOutput>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

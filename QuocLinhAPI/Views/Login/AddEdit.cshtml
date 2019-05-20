@@ -1,0 +1,145 @@
+﻿@using BUS
+@model User
+@{
+    var displayText = Model != null && Model.UserId > 0 ? "Sửa tài khoản" : "Thêm tài khoản";
+}
+
+@section css{
+    
+
+}
+
+@section js{
+    <script>
+        function createUser() {
+            var username = $('#UserName').val();
+            var password = $('#Password').val();
+            var cpassword = $('#ConfirmPassword').val();
+            var userMsg = $('#userMsg').text('');
+            var passMsg = $('#passMsg').text('');
+            var cpassMsg = $('#cpassMsg').text('');
+            var flag = false;
+            
+            if (!username) {
+                userMsg.text("Vui lòng nhập tài khoản.");
+                flag = true;
+            }
+            if (!password) {
+                passMsg.text("Vui lòng nhập mật khẩu.");
+                flag = true;
+            }
+            if (!cpassword) {
+                cpassMsg.text("Vui lòng xác nhận lại mật khẩu.");
+                flag = true;
+            }
+            if (flag) {
+                return;
+            }
+            if (password != cpassword) {
+                cpassMsg.text("Xác nhận mật khẩu không đúng.");
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                cache: false,
+                async: false,
+                url: '/Login/AddEdit',
+                data: JSON.stringify({ username: username, password: password, IsAdmin: parseInt($('#Role').val()) }),
+                success: function (data) {
+                    if (data.Status == -1) {
+                        userMsg.text("Tên tài khoản đã tồn tại.");
+                    }
+                    else {
+                        alert('Đã tạo tài khoản thành công.');
+                        //window.location.href = '/';
+                    }
+                },
+                fail: function (xhr, textStatus, errorThrown) {
+                    alert('Đã xảy ra lỗi, vui lòng thử lại sau.');
+                }
+            });
+        }
+    </script>
+}
+
+<div class="right_col" role="main" style="min-height: 3539px;">
+    <div class="">
+        <div class="page-title">
+            <div class="title_left">
+                <h3>@displayText</h3>
+            </div>
+
+            @*<div class="title_right">
+                <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for...">
+                        <span class="input-group-btn">
+                            <button class="btn btn-default" type="button">Go!</button>
+                        </span>
+                    </div>
+                </div>
+            </div>*@
+        </div>
+        <div class="clearfix"></div>
+        <div class="row">
+            <div class="col-md-12 col-sm-12 col-xs-12">
+                <div class="x_panel">
+                    <div class="x_title">
+                        <h2>@displayText @*<small>different form elements</small>*@</h2>
+                        <div class="clearfix"></div>
+                    </div>
+                    <div class="x_content form-horizontal">
+                        <br>
+                        <div class="form-group">
+                            <label class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
+                                Tên đăng nhập<span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-6">
+                                @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control col-md-7 col-xs-12", @required = "required" } })
+                                <small class="text text-danger" id="userMsg"></small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
+                                Mật khẩu <span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-6">
+                                @Html.PasswordFor(model => model.Password, new { @class = "form-control col-md-7 col-xs-12", @required = "required" })
+                                <small class="text text-danger" id="passMsg"></small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
+                                Nhập lại mật khẩu <span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-6">
+                                <input class="form-control col-md-7 col-xs-12 text-box single-line" id="ConfirmPassword" name="ConfirmPassword" required="required" type="password" value="">
+                                <small class="text text-danger" id="cpassMsg"></small>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
+                                Loại tài khoản <span class="required">*</span>
+                            </label>
+                            <div class="col-md-4 col-sm-4 col-xs-6">
+                                <select class="form-control" id="Role">
+                                    <option value="0">Người dùng</option>
+                                    <option value="1">Admin</option>
+                                </select>
+                            </div>
+                        </div>
+                       
+                        <div class="ln_solid"></div>
+                        <div class="form-group">
+                            <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
+                                <a href="javascript:" class="btn btn-success" onclick="return createUser();">Thêm tài khoản</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -14,22 +14,22 @@
 
 
     <!-- Bootstrap -->
-    <link href="~/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="~/Content/vendors/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Font Awesome -->
-    <link href="~/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="~/Content/vendors/font-awesome/css/font-awesome.min.css" rel="stylesheet">
     <!-- NProgress -->
-    <link href="~/vendors/nprogress/nprogress.css" rel="stylesheet">
+    <link href="~/Content/vendors/nprogress/nprogress.css" rel="stylesheet">
 
     <!-- Animate.css -->
-    <link href="~/vendors/animate.css/animate.min.css" rel="stylesheet">
+    <link href="~/Content/vendors/animate.css/animate.min.css" rel="stylesheet">
     <!-- bootstrap-progressbar -->
-    @*<link href="~/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">*@
+    @*<link href="~/Content/vendors/bootstrap-progressbar/css/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet">*@
     <!-- JQVMap -->
-    @*<link href="~/vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet" />*@
+    @*<link href="~/Content/vendors/jqvmap/dist/jqvmap.min.css" rel="stylesheet" />*@
     <!-- bootstrap-daterangepicker -->
-    @*<link href="~/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">*@
+    @*<link href="~/Content/vendors/bootstrap-daterangepicker/daterangepicker.css" rel="stylesheet">*@
     <!-- Custom Theme Style -->
-    <link href="~/css/custom.css" rel="stylesheet">
+    <link href="~/Content/css/custom.css" rel="stylesheet">
 
 </head>
 <body class="login">
@@ -39,11 +39,11 @@
         <div class="login_wrapper">
             <div class="animate form login_form">
                 <section class="login_content">
-                    <form asp-controller="Login" asp-action="Index" method="post" class="form">
+                    <form method="post" class="form">
                         <h1>Đăng nhập</h1>
                         <input type="hidden" name="requestpath" id="requestpath" value="@ViewBag.RequestPath" />
                         <div>
-                            <input type="text" class="form-control"  name="username" id="username" placeholder="Tên đăng nhập" required />
+                            <input type="text" class="form-control" name="username" id="username" placeholder="Tên đăng nhập" required />
                         </div>
                         <div>
                             <input type="password" class="form-control" placeholder="Mật khẩu" required name="password" id="password" />
@@ -52,24 +52,51 @@
                             <input class="btn btn-default submit" type="submit" value="Đăng nhập">
                             @*<a class="reset_pass" href="#">Lost your password?</a>*@
                         </div>
-                            @Html.ValidationMessage("InvalidAuth", new { @class = "text-danger" })
+                        <div class="alert alert-danger hide" id="msgError">
+
+                        </div>
                         @*<div class="clearfix"></div>
-                        <div class="separator">
-                            <p class="change_link">
-                                New to site?
-                                <a href="#signup" class="to_register"> Create Account </a>
-                            </p>
-                            <div class="clearfix"></div>
-                            <br />
-                            <div>
-                                <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
-                                <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
-                            </div>
-                        </div>*@
+                            <div class="separator">
+                                <p class="change_link">
+                                    New to site?
+                                    <a href="#signup" class="to_register"> Create Account </a>
+                                </p>
+                                <div class="clearfix"></div>
+                                <br />
+                                <div>
+                                    <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
+                                    <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
+                                </div>
+                            </div>*@
                     </form>
                 </section>
             </div>
         </div>
     </div>
+    <script src="~/Content/vendors/jquery/dist/jquery.min.js"></script>
+    @*<script>
+        function Login() {
+            var Username = $('#username').val();
+            var Password = $('#password').val();
+            $.ajax({
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                cache: false,
+                async: false,
+                url: '/Login/Index',
+                data: JSON.stringify({ username: Username, password: Password }),
+                success: function (data) {
+                    if (data == "0") {
+                        $('#msgError').text('Tên đăng nhập hoặc mật khẩu không chính xác');
+                        $('#msgError').show();
+                    }
+                    else {
+                        window.location.href = '/';
+                    }
+                }
+            });
+        }
+    </script>*@
 </body>
 </html>

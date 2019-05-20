@@ -29,15 +29,21 @@ namespace BUS
             }
         }
 
-        public int CheckLogin(string username, string password)
+        public User CheckLogin(string username, string password)
         {
             string md5MK = md5(password);
             var dto = ctx_library.Instance.GetAll<User>().Where(c => c.UserName.ToLower() == username.ToLower() && c.Password.ToLower() == md5MK.ToLower()).FirstOrDefault();
             if (dto != null)
             {
-                return dto.UserId;
+                return dto;
             }
-            return -1;
+            return null;
+        }
+
+        public int Insert(User dto)
+        {
+            dto.Password = md5(dto.Password);
+            return ctx_library.Instance.Insert<User>(dto);
         }
 
         public int CheckExistUsername(string username)
@@ -53,7 +59,7 @@ namespace BUS
         public int UpdatePassword(int UserId, string OldPassword, string NewPassword)
         {
             var dto = ctx_library.Instance.GetByID<User>(UserId);
-            if (CheckLogin(dto.UserName, md5(OldPassword)) > 0)
+            if (CheckLogin(dto.UserName, md5(OldPassword)) != null)
             {
                 dto.Password = md5(NewPassword);
                 ctx_library.Instance.Update<User>(dto, UserId);

@@ -61,6 +61,16 @@ namespace BUS
             return -1;
         }
 
+        public User GetById(int userid)
+        {
+            var dto = ctx_library.Instance.GetAll<User>().Where(c => c.UserId == userid).FirstOrDefault();
+            if (dto != null)
+            {
+                return dto;
+            }
+            return null;
+        }
+
         public int UpdatePassword(int UserId, string OldPassword, string NewPassword)
         {
             var dto = ctx_library.Instance.GetByID<User>(UserId);
@@ -70,6 +80,20 @@ namespace BUS
                 ctx_library.Instance.Update<User>(dto, UserId);
                 return 1;
             }
+            return 0;
+        }
+
+        public int UpdatePasswordAdmin(int UserId, string NewPassword, int Role)
+        {
+            try
+            {
+                var dto = ctx_library.Instance.GetByID<User>(UserId);
+                dto.Password = md5(NewPassword);
+                dto.Role = Role;
+                ctx_library.Instance.Update<User>(dto, UserId);
+                return 1;
+            }
+            catch { }
             return 0;
         }
 

@@ -52,8 +52,8 @@
                         userMsg.text("Tên tài khoản đã tồn tại.");
                     }
                     else {
-                        alert('Đã tạo tài khoản thành công.');
-                        //window.location.href = '/';
+                        //alert('Đã tạo tài khoản thành công.');
+                        window.location.href = '/Login/Edit?userid=' + data.Status;
                     }
                 },
                 fail: function (xhr, textStatus, errorThrown) {
@@ -96,7 +96,7 @@
                             <label class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
                                 Tên đăng nhập<span class="required">*</span>
                             </label>
-                            <div class="col-md-4 col-sm-4 col-xs-6">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
                                 @Html.EditorFor(model => model.UserName, new { htmlAttributes = new { @class = "form-control col-md-7 col-xs-12", @required = "required" } })
                                 <small class="text text-danger" id="userMsg"></small>
                             </div>
@@ -105,7 +105,7 @@
                             <label class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
                                 Mật khẩu <span class="required">*</span>
                             </label>
-                            <div class="col-md-4 col-sm-4 col-xs-6">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
                                 @Html.PasswordFor(model => model.Password, new { @class = "form-control col-md-7 col-xs-12", @required = "required" })
                                 <small class="text text-danger" id="passMsg"></small>
                             </div>
@@ -114,7 +114,7 @@
                             <label class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
                                 Nhập lại mật khẩu <span class="required">*</span>
                             </label>
-                            <div class="col-md-4 col-sm-4 col-xs-6">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
                                 <input class="form-control col-md-7 col-xs-12 text-box single-line" id="ConfirmPassword" name="ConfirmPassword" required="required" type="password" value="">
                                 <small class="text text-danger" id="cpassMsg"></small>
                             </div>
@@ -123,7 +123,7 @@
                             <label class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
                                 Loại tài khoản <span class="required">*</span>
                             </label>
-                            <div class="col-md-4 col-sm-4 col-xs-6">
+                            <div class="col-md-4 col-sm-4 col-xs-12">
                                 <select class="form-control" id="Role">
                                     <option value="0">Người dùng</option>
                                     <option value="1">Admin</option>

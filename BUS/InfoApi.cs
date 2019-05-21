@@ -20,6 +20,11 @@ namespace BUS
         public Nullable<int> UserId { get; set; }
         public Nullable<int> UserIdApi { get; set; }
         public string Container { get; set; }
+        public Nullable<int> Impression { get; set; }
+        public Nullable<int> Click { get; set; }
+        public Nullable<int> CTR { get; set; }
+        public Nullable<int> Revenues { get; set; }
+        public Nullable<int> Fillrate { get; set; }
     
         public virtual User User { get; set; }
     }

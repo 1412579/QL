@@ -1,16 +1,37 @@
 ﻿@using BUS
+@using QuocLinhAPI.Models
 @model User
 @{
     var user = Session["user"] as User;
+    var ListAPI = ViewBag.ListApi as List<InfoApi>;
 }
 
 @section css{
     
-
+    <style>
+        .checkbox-size{
+            width: 20px;
+            height: 20px;
+        }
+    
+        .form-horizontal .nope .control-label{
+            padding-top: 0;
+        }
+    </style>
 }
 
 @section js{
     <script>
+        $(document).ready(function () {
+            $('#TypeAPI').change(function () {
+                if ($(this).val() == 0) {
+                    $('#useridapi').show();
+                }
+                else {
+                    $('#useridapi').hide();
+                }
+            })
+        });
         function updateUser() {
             //var username = $('#UserName').val();
             var password = $('#Password').val();
@@ -63,10 +84,78 @@
             });
         }
 
+        function createAPI() {
+            //var username = $('#UserName').val();
+            var TypeAPI = $('#TypeAPI').val();
+            var Token = $('#Token').val();
+            var UserIdAPI = $('#UserIdAPI').val();
+            var Container = $('#Container').val();
+            
+            var tokenMsg = $('#tokenMsg').text('');
+            var userIdApiMsg = $('#userIdApiMsg').text('');
+            var containerMsg = $('#containerMsg').text('');
+            var flag = false;
+
+            //if (!username) {
+            //    userMsg.text("Vui lòng nhập tài khoản.");
+            //    flag = true;
+            //}
+            if (!Token) {
+                tokenMsg.text("Vui lòng nhập Token.");
+                flag = true;
+            }
+            if (!Container) {
+                containerMsg.text("Vui lòng nhập Inventory/App.");
+                flag = true;
+            }
+            if (!UserIdAPI && TypeAPI == 0) {
+                userIdApiMsg.text("Vui lòng nhập User ID của Appodeal.");
+                flag = true;
+            }
+            if (flag) {
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                cache: false,
+                async: false,
+                url: '/Login/AddAPI',
+                data: JSON.stringify({
+                    UserId : $('#UserId').val(),
+                    TypeAPI : TypeAPI,
+                    Token : Token,
+                    UserIdApi : UserIdAPI,
+                    Container : Container,
+                    Impression : $('#Impression').is(':checked') ? 1 : 0,
+                    Click : $('#Click').is(':checked') ? 1 : 0,
+                    CTR : $('#CTR').is(':checked') ? 1 : 0,
+                    Revenues : $('#Revenues').is(':checked') ? 1 : 0,
+                    Fillrate : $('#Fillrate').is(':checked') ? 1 : 0
+                }),
+                success: function (data) {
+                    if (data.Status == -1) {
+                        alert(data.Msg);
+                    }
+                    else {
+                        alert('Đã tạo API thành công.');
+                        //location.reload(false);
+                        //window.location.href = '/';
+                    }
+                },
+                fail: function (xhr, textStatus, errorThrown) {
+                    alert('Đã xảy ra lỗi, vui lòng thử lại sau.');
+                }
+            });
+        }
+
+
         function showChangeInfo(e) {
             $(e).hide();
             $("#Info").toggleClass('hide');
         }
+
     </script>
 }
 
@@ -111,7 +200,7 @@
                                     Loại tài khoản
                                 </label>
                                 <div class="col-md-4 col-sm-4 col-xs-12">
-                                    <input class="form-control col-md-7 col-xs-12 text-box single-line" disabled="disabled" required="required" type="text" value="@(Model.Role == 1 ? "Admin" : "Người dùng")">
+                                    <input class="form-control col-md-7 col-xs-12 text-box single-line" disabled="disabled" required="required" type="text" value="@((Role)Model.Role)">
                                     <small class="text text-danger" id="userMsg"></small>
                                 </div>
                             </div>
@@ -187,7 +276,18 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                   
+                                    @if (ListAPI != null && ListAPI.Any())
+                                    {
+                                        foreach (var item in ListAPI)
+                                        {
+                                            <tr>
+                                                <td>@item.InfoApiId</td>
+                                                <td>@((API)item.TypeAPI)</td>
+                                                <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target=".editapi" data-backdrop="static">Thông tin</button></td>
+                                            </tr>
+                                        }
+
+                                    }
                                 </tbody>
                             </table>
                         </div>
@@ -202,21 +302,87 @@
     <div class="modal fade addapi in" tabindex="-1" role="dialog" aria-hidden="true">
         <div class="modal-dialog modal-lg">
             <div class="modal-content">
-
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal">
                         <span aria-hidden="true">×</span>
                     </button>
-                    <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+                    <h4 class="modal-title" id="myModalLabel">Thêm thông tin API</h4>
                 </div>
-                <div class="modal-body">
-                    <h4>Text in a modal</h4>
-                    <p>Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum faucibus dolor auctor.</p>
-                    <p>Aenean lacinia bibendum nulla sed consectetur. Praesent commodo cursus magna, vel scelerisque nisl consectetur et. Donec sed odio dui. Donec ullamcorper nulla non metus auctor fringilla.</p>
+                <div class="modal-body form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
+                            API
+                        </label>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                            <select class="form-control" id="TypeAPI">
+                                <option value="0">Appodeal</option>
+                                <option value="1">Adincube</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
+                            API Token <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input class="form-control col-md-7 col-xs-12 text-box single-line" id="Token" name="Token" required="required" type="text" value="">
+                            <small class="text text-danger" id="tokenMsg"></small>
+                        </div>
+                    </div>
+                    <div class="form-group" id="useridapi">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
+                            User Id <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input class="form-control col-md-7 col-xs-12 text-box single-line" id="UserIdAPI" name="UserIdAPI" required="required" type="number" value="">
+                            <small class="text text-danger" id="userIdApiMsg"></small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
+                            Inventory/App <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input class="form-control col-md-7 col-xs-12 text-box single-line" id="Container" name="Container" required="required" type="text" value="">
+                            <small class="text text-danger" id="containerMsg"></small>
+                        </div>
+                    </div>
+                    <div class="form-group nope">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-6" for="last-name">
+                            Impression
+                        </label>
+                        <div class="col-md-1 col-sm-1 col-xs-6">
+                            <input class="checkbox-size" id="Impression" name="Impression" required="required" type="checkbox" value="">
+                        </div>
+                        <label class="control-label col-md-2 col-sm-2 col-xs-6" for="last-name">
+                            Click
+                        </label>
+                        <div class="col-md-1 col-sm-1 col-xs-6">
+                            <input class="checkbox-size" id="Click" name="Click" required="required" type="checkbox" value="">
+                        </div>
+                        <label class="control-label col-md-2 col-sm-2 col-xs-6" for="last-name">
+                            Revenues
+                        </label>
+                        <div class="col-md-1 col-sm-1 col-xs-6">
+                            <input class="checkbox-size" id="Revenues" name="Revenues" required="required" type="checkbox" value="">
+                        </div>
+                        <label class="control-label col-md-2 col-sm-2 col-xs-6" for="last-name">
+                            Fillrate
+                        </label>
+                        <div class="col-md-1 col-sm-1 col-xs-6">
+                            <input class="checkbox-size" id="Fillrate" name="Fillrate" required="required" type="checkbox" value="">
+                        </div>
+                        <label class="control-label col-md-2 col-sm-2 col-xs-6" for="last-name">
+                            CTR
+                        </label>
+                        <div class="col-md-1 col-sm-1 col-xs-6">
+                            <input class="checkbox-size" id="CTR" name="CTR" required="required" type="checkbox" value="">
+                        </div>
+                    </div>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" onclick="return createAPI()">Xác nhận</button>
                 </div>
 
             </div>

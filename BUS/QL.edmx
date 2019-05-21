@@ -15,6 +15,19 @@
           <Property Name="UserId" Type="int" />
           <Property Name="UserIdApi" Type="int" />
           <Property Name="Container" Type="nvarchar" MaxLength="50" />
+          <Property Name="Impression" Type="int" />
+          <Property Name="Click" Type="int" />
+          <Property Name="CTR" Type="int" />
+          <Property Name="Revenues" Type="int" />
+          <Property Name="Fillrate" Type="int" />
+        </EntityType>
+        <EntityType Name="TrickAvarage">
+          <Key>
+            <PropertyRef Name="TrickAvarageId" />
+          </Key>
+          <Property Name="TrickAvarageId" Type="int" Nullable="false" />
+          <Property Name="Value" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="CreateDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Users">
           <Key>
@@ -27,6 +40,7 @@
           <Property Name="FullName" Type="nvarchar" MaxLength="50" />
           <Property Name="DisplayName" Type="nvarchar" MaxLength="50" />
           <Property Name="Role" Type="int" />
+          <Property Name="IsDeleted" Type="int" />
         </EntityType>
         <Association Name="FK__InfoApi__UserId__1273C1CD">
           <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
@@ -42,6 +56,7 @@
         </Association>
         <EntityContainer Name="QLModelStoreContainer">
           <EntitySet Name="InfoApi" EntityType="Self.InfoApi" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="TrickAvarage" EntityType="Self.TrickAvarage" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <AssociationSet Name="FK__InfoApi__UserId__1273C1CD" Association="Self.FK__InfoApi__UserId__1273C1CD">
             <End Role="Users" EntitySet="Users" />
@@ -63,7 +78,20 @@
           <Property Name="UserId" Type="Int32" />
           <Property Name="UserIdApi" Type="Int32" />
           <Property Name="Container" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="Impression" Type="Int32" />
+          <Property Name="Click" Type="Int32" />
+          <Property Name="CTR" Type="Int32" />
+          <Property Name="Revenues" Type="Int32" />
+          <Property Name="Fillrate" Type="Int32" />
           <NavigationProperty Name="User" Relationship="Self.FK__InfoApi__UserId__1273C1CD" FromRole="InfoApi" ToRole="Users" />
+        </EntityType>
+        <EntityType Name="TrickAvarage">
+          <Key>
+            <PropertyRef Name="TrickAvarageId" />
+          </Key>
+          <Property Name="TrickAvarageId" Type="Int32" Nullable="false" />
+          <Property Name="Value" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="CreateDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -76,6 +104,7 @@
           <Property Name="FullName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="DisplayName" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="Role" Type="Int32" />
+          <Property Name="IsDeleted" Type="Int32" />
           <NavigationProperty Name="InfoApis" Relationship="Self.FK__InfoApi__UserId__1273C1CD" FromRole="Users" ToRole="InfoApi" />
         </EntityType>
         <Association Name="FK__InfoApi__UserId__1273C1CD">
@@ -92,6 +121,7 @@
         </Association>
         <EntityContainer Name="QLEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="InfoApis" EntityType="Self.InfoApi" />
+          <EntitySet Name="TrickAvarages" EntityType="Self.TrickAvarage" />
           <EntitySet Name="Users" EntityType="Self.User" />
           <AssociationSet Name="FK__InfoApi__UserId__1273C1CD" Association="Self.FK__InfoApi__UserId__1273C1CD">
             <End Role="Users" EntitySet="Users" />
@@ -113,6 +143,20 @@
                 <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="UserIdApi" ColumnName="UserIdApi" />
                 <ScalarProperty Name="Container" ColumnName="Container" />
+                <ScalarProperty Name="Impression" ColumnName="Impression" />
+                <ScalarProperty Name="Click" ColumnName="Click" />
+                <ScalarProperty Name="CTR" ColumnName="CTR" />
+                <ScalarProperty Name="Revenues" ColumnName="Revenues" />
+                <ScalarProperty Name="Fillrate" ColumnName="Fillrate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="TrickAvarages">
+            <EntityTypeMapping TypeName="QLModel.TrickAvarage">
+              <MappingFragment StoreEntitySet="TrickAvarage">
+                <ScalarProperty Name="TrickAvarageId" ColumnName="TrickAvarageId" />
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="CreateDate" ColumnName="CreateDate" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -126,6 +170,7 @@
                 <ScalarProperty Name="FullName" ColumnName="FullName" />
                 <ScalarProperty Name="DisplayName" ColumnName="DisplayName" />
                 <ScalarProperty Name="Role" ColumnName="Role" />
+                <ScalarProperty Name="IsDeleted" ColumnName="IsDeleted" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

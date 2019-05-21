@@ -4,9 +4,10 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="b6a07227046941beacd5910cd6dfafa7" Name="Diagram1">
+      <Diagram DiagramId="5a2315e408274be29fc23a334aa7f39c" Name="Diagram1">
         <EntityTypeShape EntityType="QLModel.InfoApi" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="QLModel.User" Width="1.5" PointX="0.75" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLModel.TrickAvarage" Width="1.5" PointX="5.75" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="QLModel.User" Width="1.5" PointX="0.75" PointY="1.25" IsExpanded="true" />
         <AssociationConnector Association="QLModel.FK__InfoApi__UserId__1273C1CD" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>

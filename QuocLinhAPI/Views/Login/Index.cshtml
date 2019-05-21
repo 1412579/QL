@@ -1,4 +1,6 @@
-﻿@{ 
+﻿@using BUS
+@model User
+@{ 
     Layout = null;
 }
 <!DOCTYPE html>
@@ -41,33 +43,22 @@
                 <section class="login_content">
                     <form method="post" class="form">
                         <h1>Đăng nhập</h1>
-                        <input type="hidden" name="requestpath" id="requestpath" value="@ViewBag.RequestPath" />
                         <div>
-                            <input type="text" class="form-control" name="username" id="username" placeholder="Tên đăng nhập" required />
+                            @Html.TextBoxFor(x => x.UserName, new { @class = "form-control", @placeholder = "Tên đăng nhập", @required = "required" })
                         </div>
                         <div>
-                            <input type="password" class="form-control" placeholder="Mật khẩu" required name="password" id="password" />
+                            @Html.PasswordFor(x => x.Password, new { @class = "form-control", @placeholder = "Mật khẩu", @required = "required" })
                         </div>
                         <div>
                             <input class="btn btn-default submit" type="submit" value="Đăng nhập">
                             @*<a class="reset_pass" href="#">Lost your password?</a>*@
                         </div>
-                        <div class="alert alert-danger hide" id="msgError">
-
-                        </div>
-                        @*<div class="clearfix"></div>
-                            <div class="separator">
-                                <p class="change_link">
-                                    New to site?
-                                    <a href="#signup" class="to_register"> Create Account </a>
-                                </p>
-                                <div class="clearfix"></div>
-                                <br />
-                                <div>
-                                    <h1><i class="fa fa-paw"></i> Gentelella Alela!</h1>
-                                    <p>©2016 All Rights Reserved. Gentelella Alela! is a Bootstrap 3 template. Privacy and Terms</p>
-                                </div>
-                            </div>*@
+                        @if(ViewBag.Msg != null)
+                        {
+                            <div class="alert alert-danger" id="msgError">
+                                @ViewBag.Msg
+                            </div>
+                        }
                     </form>
                 </section>
             </div>

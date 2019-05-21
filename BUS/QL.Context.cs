@@ -26,6 +26,7 @@ namespace BUS
         }
     
         public virtual DbSet<InfoApi> InfoApis { get; set; }
+        public virtual DbSet<TrickAvarage> TrickAvarages { get; set; }
         public virtual DbSet<User> Users { get; set; }
     }
 }

@@ -23,5 +23,16 @@ namespace QuocLinhAPI.Controllers
             return false;
         }
 
+        protected bool Logon()
+        {
+            if (Session["user"] == null)
+            {
+                return false;
+            }
+            else
+            {
+                return true;
+            }
+        }
     }
 }

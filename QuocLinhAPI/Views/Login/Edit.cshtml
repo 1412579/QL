@@ -22,6 +22,12 @@
 
 @section js{
     <script>
+        function Confirm(text, event) {
+            var r = confirm(text);
+            if (r == false) {
+                event.preventDefault();
+            }
+        }
         $(document).ready(function () {
             $('#TypeAPI').change(function () {
                 if ($(this).val() == 0) {
@@ -29,6 +35,14 @@
                 }
                 else {
                     $('#useridapi').hide();
+                }
+            })
+            $('#eTypeAPI').change(function () {
+                if ($(this).val() == 0) {
+                    $('#euseridapi').show();
+                }
+                else {
+                    $('#euseridapi').hide();
                 }
             })
         });
@@ -140,6 +154,128 @@
                     }
                     else {
                         alert('Đã tạo API thành công.');
+                        //location.reload(false);
+                        //window.location.href = '/';
+                    }
+                },
+                fail: function (xhr, textStatus, errorThrown) {
+                    alert('Đã xảy ra lỗi, vui lòng thử lại sau.');
+                }
+            });
+        }
+
+        function getApi(InfoApiId) {
+            $.ajax({
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                cache: false,
+                async: false,
+                url: '/Login/GetAPI',
+                data: JSON.stringify({
+                    InfoApiId: InfoApiId,
+                }),
+                success: function (data) {
+                    if (data.Status == -1) {
+                        alert(data.Msg);
+                    }
+                    else {
+                        //console.log(data.Msg);
+                        var res = JSON.parse(data.Msg);
+                        $('#eInfoApiId').val(res.InfoApiId);
+                        $('#eTypeAPI').val(res.TypeAPI);
+                        $('#eToken').val(res.Token);
+                        $('#eUserIdAPI').val(res.UserIdApi);
+                        if (res.TypeAPI == 0)
+                            $('#euseridapi').show();
+                        $('#eContainer').val(res.Container);
+                        if (res.Impression == 1)
+                            $('#eImpression').prop('checked', true);
+                        else 
+                            $('#eImpression').prop('checked', false);
+
+                        if (res.Click == 1)
+                            $('#eClick').prop('checked', true);
+                        else
+                            $('#eClick').prop('checked', false);
+                        if (res.CTR == 1)
+                            $('#eCTR').prop('checked', true);
+                        else
+                            $('#eCTR').prop('checked', false);
+                        if (res.Revenues == 1)
+                            $('#eRevenues').prop('checked', true);
+                        else
+                            $('#eRevenues').prop('checked', false);
+                        if (res.Fillrate == 1)
+                            $('#eFillrate').prop('checked', true);
+                        else
+                            $('#eFillrate').prop('checked', false);
+                        $('.editapi').modal({ backdrop: true, show: true });
+                        $('.editapi').data('bs.modal').options.backdrop = 'static';
+                    }
+                },
+                fail: function (xhr, textStatus, errorThrown) {
+                    alert('Đã xảy ra lỗi, vui lòng thử lại sau.');
+                }
+            });
+        }
+
+        function editAPI() {
+            //var username = $('#UserName').val();
+            var TypeAPI = $('#eTypeAPI').val();
+            var Token = $('#eToken').val();
+            var UserIdAPI = $('#eUserIdAPI').val();
+            var Container = $('#eContainer').val();
+
+            var tokenMsg = $('#etokenMsg').text('');
+            var userIdApiMsg = $('#euserIdApiMsg').text('');
+            var containerMsg = $('#econtainerMsg').text('');
+            var flag = false;
+
+            //if (!username) {
+            //    userMsg.text("Vui lòng nhập tài khoản.");
+            //    flag = true;
+            //}
+            if (!Token) {
+                tokenMsg.text("Vui lòng nhập Token.");
+                flag = true;
+            }
+            if (!Container) {
+                containerMsg.text("Vui lòng nhập Inventory/App.");
+                flag = true;
+            }
+            if (!UserIdAPI && TypeAPI == 0) {
+                userIdApiMsg.text("Vui lòng nhập User ID của Appodeal.");
+                flag = true;
+            }
+            if (flag) {
+                return;
+            }
+            $.ajax({
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                cache: false,
+                async: false,
+                url: '/Login/EditAPI',
+                data: JSON.stringify({
+                    InfoApiId: $('#eInfoApiId').val(),
+                    TypeAPI: TypeAPI,
+                    Token: Token,
+                    UserIdApi: UserIdAPI,
+                    Container: Container,
+                    Impression: $('#eImpression').is(':checked') ? 1 : 0,
+                    Click: $('#eClick').is(':checked') ? 1 : 0,
+                    CTR: $('#eCTR').is(':checked') ? 1 : 0,
+                    Revenues: $('#eRevenues').is(':checked') ? 1 : 0,
+                    Fillrate: $('#eFillrate').is(':checked') ? 1 : 0
+                }),
+                success: function (data) {
+                    if (data.Status == -1) {
+                        alert(data.Msg);
+                    }
+                    else {
+                        alert('Đã cập nhật API thành công.');
                         //location.reload(false);
                         //window.location.href = '/';
                     }
@@ -283,7 +419,7 @@
                                             <tr>
                                                 <td>@item.InfoApiId</td>
                                                 <td>@((API)item.TypeAPI)</td>
-                                                <td><button type="button" class="btn btn-primary" data-toggle="modal" data-target=".editapi" data-backdrop="static">Thông tin</button></td>
+                                                <td><button type="button" class="btn btn-primary" onclick="return getApi(@item.InfoApiId)">Thông tin</button><a onclick="return Confirm('Bạn có chắc muốn xoá?');" href="~/Login/DelAPI?InfoApiId=@item.InfoApiId" class="btn btn-danger" >Xoá</a></td>
                                             </tr>
                                         }
 
@@ -383,6 +519,104 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
                     <button type="button" class="btn btn-primary" onclick="return createAPI()">Xác nhận</button>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade editapi in" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">
+                        <span aria-hidden="true">×</span>
+                    </button>
+                    <h4 class="modal-title" id="myModalLabel">Sửa thông tin API</h4>
+                </div>
+                <div class="modal-body form-horizontal">
+                    <div class="form-group">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
+                            ID API
+                        </label>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                            <input class="form-control col-md-7 col-xs-12 text-box single-line" id="eInfoApiId" name="eInfoApiId" required="required" disabled type="text" value="">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
+                            API
+                        </label>
+                        <div class="col-md-4 col-sm-4 col-xs-6">
+                            <select class="form-control" id="eTypeAPI">
+                                <option value="0">Appodeal</option>
+                                <option value="1">Adincube</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
+                            API Token <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input class="form-control col-md-7 col-xs-12 text-box single-line" id="eToken" name="Token" required="required" type="text" value="">
+                            <small class="text text-danger" id="etokenMsg"></small>
+                        </div>
+                    </div>
+                    <div class="form-group" id="euseridapi">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
+                            User Id <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input class="form-control col-md-7 col-xs-12 text-box single-line" id="eUserIdAPI" name="eUserIdAPI" required="required" type="number" value="">
+                            <small class="text text-danger" id="euserIdApiMsg"></small>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
+                            Inventory/App <span class="required">*</span>
+                        </label>
+                        <div class="col-md-6 col-sm-6 col-xs-12">
+                            <input class="form-control col-md-7 col-xs-12 text-box single-line" id="eContainer" name="eContainer" required="required" type="text" value="">
+                            <small class="text text-danger" id="econtainerMsg"></small>
+                        </div>
+                    </div>
+                    <div class="form-group nope">
+                        <label class="control-label col-md-2 col-sm-2 col-xs-6" for="last-name">
+                            Impression
+                        </label>
+                        <div class="col-md-1 col-sm-1 col-xs-6">
+                            <input class="checkbox-size" id="eImpression" name="eImpression" required="required" type="checkbox" value="">
+                        </div>
+                        <label class="control-label col-md-2 col-sm-2 col-xs-6" for="last-name">
+                            Click
+                        </label>
+                        <div class="col-md-1 col-sm-1 col-xs-6">
+                            <input class="checkbox-size" id="eClick" name="eClick" required="required" type="checkbox" value="">
+                        </div>
+                        <label class="control-label col-md-2 col-sm-2 col-xs-6" for="last-name">
+                            Revenues
+                        </label>
+                        <div class="col-md-1 col-sm-1 col-xs-6">
+                            <input class="checkbox-size" id="eRevenues" name="eRevenues" required="required" type="checkbox" value="">
+                        </div>
+                        <label class="control-label col-md-2 col-sm-2 col-xs-6" for="last-name">
+                            Fillrate
+                        </label>
+                        <div class="col-md-1 col-sm-1 col-xs-6">
+                            <input class="checkbox-size" id="eFillrate" name="eFillrate" required="required" type="checkbox" value="">
+                        </div>
+                        <label class="control-label col-md-2 col-sm-2 col-xs-6" for="last-name">
+                            CTR
+                        </label>
+                        <div class="col-md-1 col-sm-1 col-xs-6">
+                            <input class="checkbox-size" id="eCTR" name="CTR" required="required" type="checkbox" value="">
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                    <button type="button" class="btn btn-primary" onclick="return editAPI()">Xác nhận</button>
                 </div>
 
             </div>

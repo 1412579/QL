@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using BUS;
+using Newtonsoft.Json;
 namespace QuocLinhAPI.Controllers
 {
     public class LoginController : BaseController
@@ -138,6 +139,7 @@ namespace QuocLinhAPI.Controllers
             }
         }
 
+        //API Area
 
         [HttpPost]
         public ActionResult AddAPI(int UserId,int TypeAPI,string Token,int UserIdAPI,string Container, int Impression, int Click, int CTR, int Revenues, int Fillrate)
@@ -169,6 +171,67 @@ namespace QuocLinhAPI.Controllers
                 });
         }
 
+        [HttpPost]
+        public ActionResult GetAPI(int InfoApiId)
+        {
+            if (!IsAdminLogged())
+                return Json(new
+                {
+                    Status = -1,
+                    Msg = "Không có quyền truy cập."
+                });
+            var model = BUS_API.Instance.GetById(InfoApiId);
+            if(model != null)
+            {
+                return Json(new
+                {
+                    Status = 1,
+                    Msg = JsonConvert.SerializeObject(model)
+                });
+            }
+            return Json(new
+            {
+                Status = -1,
+                Msg = "Không lấy được dữ liệu"
+            });
+        }
+
+
+        [HttpPost]
+        public ActionResult EditAPI(int InfoApiId, int TypeAPI, string Token, int UserIdAPI, string Container, int Impression, int Click, int CTR, int Revenues, int Fillrate)
+        {
+            if (!IsAdminLogged())
+                return Json(new
+                {
+                    Status = -1,
+                    Msg = "Không có quyền truy cập."
+                });
+            var model = BUS_API.Instance.GetById(InfoApiId);
+            model.TypeAPI = TypeAPI;
+            model.Token = Token;
+            model.UserIdApi = UserIdAPI;
+            model.Container = Container;
+            model.Impression = Impression;
+            model.Click = Click;
+            model.CTR = CTR;
+            model.Revenues = Revenues;
+            model.Fillrate = Fillrate;
+            var id = BUS_API.Instance.Update(model);
+            return Json(new
+            {
+                Status = id,
+                Msg = ""
+            });
+        }
+
+        public ActionResult DelAPI(int InfoApiId)
+        {
+            if (!IsAdminLogged())
+                return Redirect("~/");
+            var model = BUS_API.Instance.Delete(InfoApiId);
+            return Redirect(Request.UrlReferrer.ToString());
+        }
+
         #endregion
 
         public ActionResult IsLogged()
@@ -179,6 +242,12 @@ namespace QuocLinhAPI.Controllers
             }
             return Content("");
         }
+
+        public ActionResult Logout()
+        {
+            Session["user"] = null;
+            return Redirect("~/Login");
+    }
 
     }
 }

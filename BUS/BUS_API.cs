@@ -34,6 +34,11 @@ namespace BUS
             return ctx_library.Instance.Insert<InfoApi>(dto);
         }
 
+        public int Delete(int InfoApiId)
+        {
+            return ctx_library.Instance.Delete<InfoApi>(InfoApiId);
+        }
+
         public List<InfoApi> GetAll()
         {
             return ctx_library.Instance.GetAll<InfoApi>().ToList();
@@ -52,6 +57,12 @@ namespace BUS
                 return dto;
             }
             return null;
+        }
+
+        public int Update(InfoApi model)
+        {
+            ctx_library.Instance.Update<InfoApi>(model, model.InfoApiId);
+            return 1;
         }
 
     }

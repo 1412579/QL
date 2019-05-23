@@ -15,7 +15,7 @@ namespace BUS
     public partial class TrickAvarage
     {
         public int TrickAvarageId { get; set; }
-        public decimal Value { get; set; }
+        public int Value { get; set; }
         public Nullable<System.DateTime> CreateDate { get; set; }
     }
 }

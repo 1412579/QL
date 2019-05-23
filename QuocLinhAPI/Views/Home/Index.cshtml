@@ -132,12 +132,16 @@
             $('#selectAPI').select2({multiple:true});
         });
         var start = moment();
-    var end = moment();
+        var end = moment();
+        $('#Start').val(start.format('YYYY-MM-DD'));
+        $('#End').val(end.format('YYYY-MM-DD'));
     $(function() {
-
+       
 
         function cb(start, end) {
             $('#reportrange span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+            $('#Start').val(start.format('YYYY-MM-DD'));
+            $('#End').val(end.format('YYYY-MM-DD'));
         }
 
         $('#reportrange').daterangepicker({
@@ -157,30 +161,42 @@
 
     });
 
-        function GetDataFromApiAdmin(ele){
+        function GetDataFromApi(ele){
             $(ele).prop("disabled",true);
-            var selectedAPI = $('#selectAPI').val();
+            var selectedAPI = $('#selectAPI').val() + "";
             $('#loading').show();
              $.ajax({
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
                 dataType: 'json',
-                cache: false,
-                async: false,
+                async: true,
                 url: '/Home/GetData',
                 data: JSON.stringify({
                     ListSelected: selectedAPI,
-                    start: start.format('YYYY-MM-DD'),
-                    end: end.format('YYYY-MM-DD'),
+                    start: $('#Start').val(),
+                    end: $('#End').val(),
                 }),
                 success: function (data) {
                     if (data.Status == -1) {
                         alert(data.Msg);
                     }
                     else {
-                        console.log(data.Msg);
-                        //location.reload(false);
-                        //window.location.href = '/';
+                        $('.rsdata').removeClass('hide').addClass('hide');
+                        var res = JSON.parse(data.Msg);
+                        //console.log(res);
+                        $.each(res, function (i, data) {
+                            $('#api_' + data.InfoApiId).find('tbody').html(data.Html);
+                            $('#api_' + data.InfoApiId).removeClass('hide');
+                            if ($('#Impression_' + data.InfoApiId).length) {
+                                $('#Impression_' + data.InfoApiId).text(data.TotalImpressions);
+                            }
+                            if ($('#Revenues_' + data.InfoApiId).length) {
+                                $('#Revenues_' + data.InfoApiId).text(data.TotalRevenue);
+                            }
+                            if ($('#Clicks_' + data.InfoApiId).length) {
+                                $('#Clicks_' + data.InfoApiId).text(data.TotalClicks);
+                            }
+                        });
                     }
                 },
                 fail: function (xhr, textStatus, errorThrown) {
@@ -259,10 +275,12 @@
                                     </div>
                                 </div>
                             </div>
+                            <input type="hidden" id="Start" value="" />
+                            <input type="hidden" id="End" value="" />
                             <div class="clearfix"></div>
                             <div class="form-group">
                                 <div class="col-md-6 col-sm-6 col-xs-12 col-md-offset-3">
-                                    <button type="button" style="margin-bottom: -2px;" class="btn btn-success" onclick="return GetDataFromApi@(IsAdmin ? "Admin" : "")(this);">Xác nhận</button>
+                                    <button type="button" style="margin-bottom: -2px;" class="btn btn-success" onclick="return GetDataFromApi(this);">Xác nhận</button>
                                 </div>
                             </div>
                         </div>
@@ -278,7 +296,7 @@
             <div class="clearfix"></div>
             @foreach (var item in Model)
             {
-                <div class="row hide" id="api_@item.InfoApiId">
+                <div class="row hide rsdata" id="api_@item.InfoApiId">
                     <div class="col-md-12 col-sm-12 col-xs-12">
                         <div class="x_panel">
                             <div class="x_title">
@@ -288,7 +306,38 @@
                                 {
                                     <h5>Token: @item.Token @((API)item.TypeAPI == API.Appodeal ? "- UserId: " + item.UserId : "")</h5>
                                 }
+
                             </div>
+                            @if (item.Impression == 1 || IsAdmin)
+                            {
+                                <div class="row">
+                                    <h5 class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
+                                        Total Impression:
+                                    </h5>
+                                    <h4 class="col-md-4 col-sm-4 col-xs-12 text text-success" id="Impression_@item.InfoApiId"></h4>
+                                </div>
+                            }
+
+                            @if (item.Revenues == 1 || IsAdmin)
+                            {
+                                <div class="row">
+                                    <h5 class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
+                                        Total Revenues:
+                                    </h5>
+                                    <h4 class="col-md-4 col-sm-4 col-xs-12 text text-success" id="Revenues_@item.InfoApiId"></h4>
+                                </div>
+                            }
+
+                            @if (item.Click == 1 || IsAdmin)
+                            {
+                                <div class="row">
+                                    <h5 class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
+                                        Total Clicks:
+                                    </h5>
+                                    <h4 class="col-md-4 col-sm-4 col-xs-12 text text-success" id="Clicks_@item.InfoApiId"></h4>
+                                </div>
+                            }
+                            
                             <div class="x_content">
                                 <table id="listing" class="table table-striped table-bordered bulk_action">
                                     <thead>
@@ -301,6 +350,7 @@
                                                 <th>Fillrate</th>
                                                 <th>Revenues</th>
                                                 <th>CTR</th>
+
                                             }
                                             else
                                             {
@@ -325,6 +375,13 @@
                                                 {
                                                     <th>CTR</th>
                                                 }
+                                            }
+                                            @if ((API)item.TypeAPI == API.Appodeal)
+                                            {
+                                                <th>Requests</th>
+                                                <th>Fills</th>
+                                                <th>Views</th>
+                                                <th>Ecpm</th>
                                             }
                                         </tr>
                                     </thead>

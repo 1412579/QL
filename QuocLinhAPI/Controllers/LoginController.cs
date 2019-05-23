@@ -143,7 +143,7 @@ namespace QuocLinhAPI.Controllers
         //API Area
 
         [HttpPost]
-        public ActionResult AddAPI(int UserId,int TypeAPI,string Token,int UserIdAPI,string Container, int Impression, int Click, int CTR, int Revenues, int Fillrate)
+        public ActionResult AddAPI(int UserId,int TypeAPI,string Token,int UserIdAPI,string Container, int Impression, int Click, int CTR, int Revenues, int Fillrate, int Requests, int Fills,int Views, int Ecpm)
         {
             if (!IsAdminLogged())
                 return Json(new
@@ -162,7 +162,11 @@ namespace QuocLinhAPI.Controllers
                     Click = Click,
                     CTR = CTR,
                     Revenues = Revenues,
-                    Fillrate = Fillrate
+                    Fillrate = Fillrate,
+                    Requests = Requests,
+                    Fills = Fills,
+                    Views = Views,
+                    Ecpm = Ecpm
                 };
                 var id = BUS_API.Instance.Insert(dto);
                 return Json(new
@@ -233,7 +237,7 @@ namespace QuocLinhAPI.Controllers
 
 
         [HttpPost]
-        public ActionResult EditAPI(int InfoApiId, int TypeAPI, string Token, int UserIdAPI, string Container, int Impression, int Click, int CTR, int Revenues, int Fillrate)
+        public ActionResult EditAPI(int InfoApiId, int TypeAPI, string Token, int UserIdAPI, string Container, int Impression, int Click, int CTR, int Revenues, int Fillrate, int Requests, int Fills, int Views, int Ecpm)
         {
             if (!IsAdminLogged())
                 return Json(new
@@ -251,6 +255,10 @@ namespace QuocLinhAPI.Controllers
             model.CTR = CTR;
             model.Revenues = Revenues;
             model.Fillrate = Fillrate;
+            model.Requests = Requests;
+            model.Fills = Fills;
+            model.Views = Views;
+            model.Ecpm = Ecpm;
             var id = BUS_API.Instance.Update(model);
             return Json(new
             {

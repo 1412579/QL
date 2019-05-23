@@ -31,17 +31,21 @@
             $('#TypeAPI').change(function () {
                 if ($(this).val() == 0) {
                     $('#useridapi').show();
+                    $('#appocb').show();
                 }
                 else {
                     $('#useridapi').hide();
+                    $('#appocb').hide();
                 }
             })
             $('#eTypeAPI').change(function () {
                 if ($(this).val() == 0) {
                     $('#euseridapi').show();
+                    $('#eappocb').show();
                 }
                 else {
                     $('#euseridapi').hide();
+                    $('#eappocb').hide();
                 }
             })
         });
@@ -77,8 +81,7 @@
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
                 dataType: 'json',
-                cache: false,
-                async: false,
+                async: true,
                 url: '/Login/UpdateUserByAdmin',
                 data: JSON.stringify({ password: password, UserId: parseInt($('#UserId').val()), Role: parseInt($('#Role').val()) }),
                 success: function (data) {
@@ -136,8 +139,7 @@
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
                 dataType: 'json',
-                cache: false,
-                async: false,
+                async: true,
                 url: '/Login/AddAPI',
                 data: JSON.stringify({
                     UserId: UserId,
@@ -149,7 +151,11 @@
                     Click : $('#Click').is(':checked') ? 1 : 0,
                     CTR : $('#CTR').is(':checked') ? 1 : 0,
                     Revenues : $('#Revenues').is(':checked') ? 1 : 0,
-                    Fillrate : $('#Fillrate').is(':checked') ? 1 : 0
+                    Fillrate: $('#Fillrate').is(':checked') ? 1 : 0,
+                    Requests: $('#Requests').is(':checked') ? 1 : 0,
+                    Fills: $('#Fills').is(':checked') ? 1 : 0,
+                    Views: $('#Views').is(':checked') ? 1 : 0,
+                    Ecpm: $('#Ecpm').is(':checked') ? 1 : 0,
                 }),
                 success: function (data) {
                     if (data.Status == -1) {
@@ -173,8 +179,7 @@
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
                 dataType: 'json',
-                cache: false,
-                async: false,
+                async: true,
                 url: '/Login/ListApi',
                 data: JSON.stringify({
                     UserId: $('#UserId').val(),
@@ -198,8 +203,7 @@
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
                 dataType: 'json',
-                cache: false,
-                async: false,
+                async: true,
                 url: '/Login/GetAPI',
                 data: JSON.stringify({
                     InfoApiId: InfoApiId,
@@ -215,10 +219,14 @@
                         $('#eTypeAPI').val(res.TypeAPI);
                         $('#eToken').val(res.Token);
                         $('#eUserIdAPI').val(res.UserIdApi);
-                        if (res.TypeAPI == 0)
+                        if (res.TypeAPI == 0) {
                             $('#euseridapi').show();
-                        else
+                            $('#eappocb').show();
+                        }
+                        else {
                             $('#euseridapi').hide();
+                            $('#eappocb').hide();
+                        }
                             
                         $('#eContainer').val(res.Container);
                         if (res.Impression == 1)
@@ -242,6 +250,26 @@
                             $('#eFillrate').prop('checked', true);
                         else
                             $('#eFillrate').prop('checked', false);
+
+                        if (res.Requests == 1)
+                            $('#eRequests').prop('checked', true);
+                        else
+                            $('#eRequests').prop('checked', false);
+
+                        if (res.Fills == 1)
+                            $('#eFills').prop('checked', true);
+                        else
+                            $('#eFills').prop('checked', false);
+
+                        if (res.Views == 1)
+                            $('#eViews').prop('checked', true);
+                        else
+                            $('#eViews').prop('checked', false);
+
+                        if (res.Ecpm == 1)
+                            $('#eEcpm').prop('checked', true);
+                        else
+                            $('#eEcpm').prop('checked', false);
                         $('.editapi').modal({ backdrop: true, show: true });
                         $('.editapi').data('bs.modal').options.backdrop = 'static';
                     }
@@ -291,8 +319,7 @@
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
                 dataType: 'json',
-                cache: false,
-                async: false,
+                async: true,
                 url: '/Login/EditAPI',
                 data: JSON.stringify({
                     InfoApiId: $('#eInfoApiId').val(),
@@ -304,7 +331,11 @@
                     Click: $('#eClick').is(':checked') ? 1 : 0,
                     CTR: $('#eCTR').is(':checked') ? 1 : 0,
                     Revenues: $('#eRevenues').is(':checked') ? 1 : 0,
-                    Fillrate: $('#eFillrate').is(':checked') ? 1 : 0
+                    Fillrate: $('#eFillrate').is(':checked') ? 1 : 0,
+                    Requests: $('#eRequests').is(':checked') ? 1 : 0,
+                    Fills: $('#eFills').is(':checked') ? 1 : 0,
+                    Views: $('#eViews').is(':checked') ? 1 : 0,
+                    Ecpm: $('#eEcpm').is(':checked') ? 1 : 0,
                 }),
                 success: function (data) {
                     if (data.Status == -1) {
@@ -535,6 +566,33 @@
                         <div class="col-md-1 col-sm-1 col-xs-6">
                             <input class="checkbox-size" id="CTR" name="CTR" required="required" type="checkbox" value="">
                         </div>
+
+                        <div id="appocb">
+                            <label class="control-label col-md-2 col-sm-2 col-xs-6" for="last-name">
+                                Requests
+                            </label>
+                            <div class="col-md-1 col-sm-1 col-xs-6">
+                                <input class="checkbox-size" id="Requests" name="Requests" required="required" type="checkbox" value="">
+                            </div>
+                            <label class="control-label col-md-2 col-sm-2 col-xs-6" for="last-name">
+                                Fills
+                            </label>
+                            <div class="col-md-1 col-sm-1 col-xs-6">
+                                <input class="checkbox-size" id="Fills" name="Fills" required="required" type="checkbox" value="">
+                            </div>
+                            <label class="control-label col-md-2 col-sm-2 col-xs-6" for="last-name">
+                                Views
+                            </label>
+                            <div class="col-md-1 col-sm-1 col-xs-6">
+                                <input class="checkbox-size" id="Views" name="Views" required="required" type="checkbox" value="">
+                            </div>
+                            <label class="control-label col-md-2 col-sm-2 col-xs-6" for="last-name">
+                                Ecpm
+                            </label>
+                            <div class="col-md-1 col-sm-1 col-xs-6">
+                                <input class="checkbox-size" id="Ecpm" name="Ecpm" required="required" type="checkbox" value="">
+                            </div>
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -632,6 +690,32 @@
                         </label>
                         <div class="col-md-1 col-sm-1 col-xs-6">
                             <input class="checkbox-size" id="eCTR" name="CTR" required="required" type="checkbox" value="">
+                        </div>
+                        <div id="eappocb">
+                            <label class="control-label col-md-2 col-sm-2 col-xs-6" for="last-name">
+                                Requests
+                            </label>
+                            <div class="col-md-1 col-sm-1 col-xs-6">
+                                <input class="checkbox-size" id="eRequests" name="eRequests" required="required" type="checkbox" value="">
+                            </div>
+                            <label class="control-label col-md-2 col-sm-2 col-xs-6" for="last-name">
+                                Fills
+                            </label>
+                            <div class="col-md-1 col-sm-1 col-xs-6">
+                                <input class="checkbox-size" id="eFills" name="eFills" required="required" type="checkbox" value="">
+                            </div>
+                            <label class="control-label col-md-2 col-sm-2 col-xs-6" for="last-name">
+                                Views
+                            </label>
+                            <div class="col-md-1 col-sm-1 col-xs-6">
+                                <input class="checkbox-size" id="eViews" name="eViews" required="required" type="checkbox" value="">
+                            </div>
+                            <label class="control-label col-md-2 col-sm-2 col-xs-6" for="last-name">
+                                Ecpm
+                            </label>
+                            <div class="col-md-1 col-sm-1 col-xs-6">
+                                <input class="checkbox-size" id="eEcpm" name="eEcpm" required="required" type="checkbox" value="">
+                            </div>
                         </div>
                     </div>
                 </div>

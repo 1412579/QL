@@ -20,13 +20,17 @@
           <Property Name="CTR" Type="int" />
           <Property Name="Revenues" Type="int" />
           <Property Name="Fillrate" Type="int" />
+          <Property Name="Requests" Type="int" />
+          <Property Name="Fills" Type="int" />
+          <Property Name="Views" Type="int" />
+          <Property Name="Ecpm" Type="int" />
         </EntityType>
         <EntityType Name="TrickAvarage">
           <Key>
             <PropertyRef Name="TrickAvarageId" />
           </Key>
           <Property Name="TrickAvarageId" Type="int" Nullable="false" />
-          <Property Name="Value" Type="decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Value" Type="int" Nullable="false" />
           <Property Name="CreateDate" Type="datetime" />
         </EntityType>
         <EntityType Name="Users">
@@ -83,6 +87,10 @@
           <Property Name="CTR" Type="Int32" />
           <Property Name="Revenues" Type="Int32" />
           <Property Name="Fillrate" Type="Int32" />
+          <Property Name="Requests" Type="Int32" />
+          <Property Name="Fills" Type="Int32" />
+          <Property Name="Views" Type="Int32" />
+          <Property Name="Ecpm" Type="Int32" />
           <NavigationProperty Name="User" Relationship="Self.FK__InfoApi__UserId__1273C1CD" FromRole="InfoApi" ToRole="Users" />
         </EntityType>
         <EntityType Name="TrickAvarage">
@@ -90,7 +98,7 @@
             <PropertyRef Name="TrickAvarageId" />
           </Key>
           <Property Name="TrickAvarageId" Type="Int32" Nullable="false" />
-          <Property Name="Value" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
+          <Property Name="Value" Type="Int32" Nullable="false" />
           <Property Name="CreateDate" Type="DateTime" Precision="3" />
         </EntityType>
         <EntityType Name="User">
@@ -148,6 +156,10 @@
                 <ScalarProperty Name="CTR" ColumnName="CTR" />
                 <ScalarProperty Name="Revenues" ColumnName="Revenues" />
                 <ScalarProperty Name="Fillrate" ColumnName="Fillrate" />
+                <ScalarProperty Name="Requests" ColumnName="Requests" />
+                <ScalarProperty Name="Fills" ColumnName="Fills" />
+                <ScalarProperty Name="Views" ColumnName="Views" />
+                <ScalarProperty Name="Ecpm" ColumnName="Ecpm" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

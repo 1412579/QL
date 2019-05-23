@@ -1,6 +1,7 @@
 ﻿using BUS;
 using System;
 using System.Collections.Generic;
+using System.Dynamic;
 using System.IO;
 using System.Linq;
 using System.Net;
@@ -77,9 +78,15 @@ namespace BUS
             }
             else if(TypeAPI == 1)
             {
-                rsl = $"https://api.adincube.com/api/1.3/public/reporting/inventory/{Container}?start={Start}&end={End}&auth_token={Container}";
+                rsl = $"https://api.adincube.com/api/1.3/public/reporting/inventory/{Container}?start={Start}&end={End}&auth_token={Token}";
             }
             return rsl;
+        }
+
+        public bool IsPropertyExist(dynamic d, string name)
+        {
+            Type type = d.GetType();
+            return type.GetProperties().Any(p => p.Name.Equals(name));
         }
 
     }

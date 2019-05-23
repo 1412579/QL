@@ -134,12 +134,12 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Enum.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\custom.css" />
     <Content Include="Content\css\custom.min.css" />
+    <Content Include="Content\css\select2.min.css" />
     <Content Include="Content\favicon.ico" />
     <Content Include="Content\images\back_disabled.png" />
     <Content Include="Content\images\back_enabled.png" />
@@ -152,6 +152,7 @@
     <Content Include="Content\images\loading.gif" />
     <Content Include="Content\js\custom.js" />
     <Content Include="Content\js\custom.min.js" />
+    <Content Include="Content\js\select2.min.js" />
     <Content Include="Content\lib\bootstrap\dist\css\bootstrap-theme.css" />
     <Content Include="Content\lib\bootstrap\dist\css\bootstrap-theme.min.css" />
     <Content Include="Content\lib\bootstrap\dist\css\bootstrap.css" />
@@ -4585,9 +4586,11 @@
     <Content Include="Views\Login\Listing.cshtml" />
     <Content Include="Views\Login\Edit.cshtml" />
     <Content Include="Views\Home\CTRNumber.cshtml" />
+    <Content Include="Views\Login\ListIdAdincube.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Models\" />
     <Folder Include="Views\Base\" />
   </ItemGroup>
   <ItemGroup>

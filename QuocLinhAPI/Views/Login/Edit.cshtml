@@ -1,5 +1,4 @@
 ﻿@using BUS
-@using QuocLinhAPI.Models
 @model User
 @{
     var user = Session["user"] as User;
@@ -126,9 +125,13 @@
                 userIdApiMsg.text("Vui lòng nhập User ID của Appodeal.");
                 flag = true;
             }
+            else if (TypeAPI == 1){
+                UserIdAPI = 0;
+            }
             if (flag) {
                 return;
             }
+            var UserId = $('#UserId').val();
             $.ajax({
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
@@ -137,7 +140,7 @@
                 async: false,
                 url: '/Login/AddAPI',
                 data: JSON.stringify({
-                    UserId : $('#UserId').val(),
+                    UserId: UserId,
                     TypeAPI : TypeAPI,
                     Token : Token,
                     UserIdApi : UserIdAPI,
@@ -154,8 +157,34 @@
                     }
                     else {
                         alert('Đã tạo API thành công.');
+                        reloadLisstApi(UserId);
                         //location.reload(false);
                         //window.location.href = '/';
+                    }
+                },
+                fail: function (xhr, textStatus, errorThrown) {
+                    alert('Đã xảy ra lỗi, vui lòng thử lại sau.');
+                }
+            });
+        }
+
+        function reloadLisstApi() {
+            $.ajax({
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                cache: false,
+                async: false,
+                url: '/Login/ListApi',
+                data: JSON.stringify({
+                    UserId: $('#UserId').val(),
+                }),
+                success: function (data) {
+                    if (data.Status == -1) {
+                        alert(data.Msg);
+                    }
+                    else {
+                        $('#listing tbody').html(data.Msg);
                     }
                 },
                 fail: function (xhr, textStatus, errorThrown) {
@@ -188,6 +217,9 @@
                         $('#eUserIdAPI').val(res.UserIdApi);
                         if (res.TypeAPI == 0)
                             $('#euseridapi').show();
+                        else
+                            $('#euseridapi').hide();
+                            
                         $('#eContainer').val(res.Container);
                         if (res.Impression == 1)
                             $('#eImpression').prop('checked', true);
@@ -248,9 +280,13 @@
                 userIdApiMsg.text("Vui lòng nhập User ID của Appodeal.");
                 flag = true;
             }
+            else if (TypeAPI == 1) {
+                UserIdAPI = 0;
+            }
             if (flag) {
                 return;
             }
+            var UserId = $('#UserId').val();
             $.ajax({
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
@@ -276,6 +312,7 @@
                     }
                     else {
                         alert('Đã cập nhật API thành công.');
+                        reloadLisstApi(UserId);
                         //location.reload(false);
                         //window.location.href = '/';
                     }
@@ -297,22 +334,6 @@
 
     <div class="right_col" role="main" style="min-height: 3539px;">
         <div class="">
-            <div class="page-title">
-                <div class="title_left">
-                    <h3>Thông tin tài khoản</h3>
-                </div>
-
-                @*<div class="title_right">
-                    <div class="col-md-5 col-sm-5 col-xs-12 form-group pull-right top_search">
-                        <div class="input-group">
-                            <input type="text" class="form-control" placeholder="Search for...">
-                            <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">Go!</button>
-                            </span>
-                        </div>
-                    </div>
-                </div>*@
-            </div>
             <div class="clearfix"></div>
             <div class="row">
                 <div class="col-md-12 col-sm-12 col-xs-12">

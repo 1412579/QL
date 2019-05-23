@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using BUS;
 using Newtonsoft.Json;
+
 namespace QuocLinhAPI.Controllers
 {
     public class LoginController : BaseController
@@ -196,6 +197,40 @@ namespace QuocLinhAPI.Controllers
             });
         }
 
+        [HttpPost]
+        public ActionResult ListApi(int UserId)
+        {
+            if (!IsAdminLogged())
+                return Json(new
+                {
+                    Status = -1,
+                    Msg = "Không có quyền truy cập."
+                });
+            var model = BUS_API.Instance.GetAllByUserId(UserId);
+            if (model != null && model.Any())
+            {
+                var stringRsl = string.Empty;
+                foreach(var item in model)
+                {
+                    stringRsl += "<tr>";
+                    stringRsl += "<td>" +item.InfoApiId+ "</td>";
+                    stringRsl += "<td>" + (API)item.TypeAPI + "</td>";
+                    stringRsl += $"<td><button type=\"button\" class=\"btn btn-primary\" onclick=\"return getApi({ item.InfoApiId})\">Thông tin</button><a onclick=\"return Confirm('Bạn có chắc muốn xoá?');\" href=\"/Login/DelAPI?InfoApiId={item.InfoApiId}\" class=\"btn btn-danger\" >Xoá</a></td>";
+                    stringRsl += "</tr>";
+                }
+                return Json(new
+                {
+                    Status = 1,
+                    Msg = stringRsl
+                });
+            }
+            return Json(new
+            {
+                Status = -1,
+                Msg = "Không lấy được dữ liệu"
+            });
+        }
+
 
         [HttpPost]
         public ActionResult EditAPI(int InfoApiId, int TypeAPI, string Token, int UserIdAPI, string Container, int Impression, int Click, int CTR, int Revenues, int Fillrate)
@@ -223,7 +258,6 @@ namespace QuocLinhAPI.Controllers
                 Msg = ""
             });
         }
-
         public ActionResult DelAPI(int InfoApiId)
         {
             if (!IsAdminLogged())
@@ -231,6 +265,27 @@ namespace QuocLinhAPI.Controllers
             var model = BUS_API.Instance.Delete(InfoApiId);
             return Redirect(Request.UrlReferrer.ToString());
         }
+
+        public ActionResult ListIdAdincube()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult ListIdAdincube(string Token)
+        {
+            if (!IsAdminLogged())
+                return Redirect("~/");
+
+            var model = Helpers.Instance.GetJSON("https://api.adincube.com/api/1.3/public/inventories?auth_token=" + Token);
+            if(model == null)
+            {
+                ViewBag.Error = "Không tìm thấy thông tin";
+                return View();
+            }
+            return View(model);
+        }
+
 
         #endregion
 

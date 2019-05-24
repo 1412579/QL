@@ -47,6 +47,13 @@ namespace BUS
         public int InfoApiId { get; set; }
     }
 
+    [Serializable]
+    public class NoData
+    {
+        public List<int> TimeOut { get; set; }
+        public List<int> NoResult { get; set; }
+    }
+
     public enum Role
     {
         Admin = 1,

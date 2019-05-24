@@ -71,13 +71,13 @@ namespace BUS
             return null;
         }
 
-        public int UpdatePassword(int UserId, string OldPassword, string NewPassword)
+        public int UpdatePassword(string UserName, string OldPassword, string NewPassword)
         {
-            var dto = ctx_library.Instance.GetByID<User>(UserId);
-            if (CheckLogin(dto.UserName, md5(OldPassword)) != null)
+            var dto = CheckLogin(UserName, OldPassword);
+            if (dto != null)
             {
                 dto.Password = md5(NewPassword);
-                ctx_library.Instance.Update<User>(dto, UserId);
+                ctx_library.Instance.Update<User>(dto, dto.UserId);
                 return 1;
             }
             return 0;

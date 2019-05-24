@@ -4587,6 +4587,7 @@
     <Content Include="Views\Login\Edit.cshtml" />
     <Content Include="Views\Home\CTRNumber.cshtml" />
     <Content Include="Views\Login\ListIdAdincube.cshtml" />
+    <Content Include="Views\Login\UserEdit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

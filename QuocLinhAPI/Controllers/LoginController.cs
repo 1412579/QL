@@ -140,6 +140,34 @@ namespace QuocLinhAPI.Controllers
             }
         }
 
+        public ActionResult UserEdit(string UserName, string opassword, string password)
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public ActionResult UpdatePassword(string UserName, string opassword, string password)
+        {
+            var IsValid = BUS_User.Instance.UpdatePassword(UserName, opassword, password);
+            if (IsValid > 0)
+            {
+                return Json(new
+                {
+                    Status = 1,
+                    Msg = ""
+                });
+            }
+            else
+            {
+                return Json(new
+                {
+                    Status = -1,
+                    Msg = "Mật khẩu cũ không chính xác."
+                });
+            }
+        }
+
         //API Area
 
         [HttpPost]

@@ -77,7 +77,9 @@ namespace QuocLinhAPI.Controllers
 
             }
             var ListCalled = new List<CalledToAppodeal>();
-            var NoData = new List<int>();
+            var NoData = new NoData();
+            var TimeOut = new List<int>();
+            var NoResult = new List<int>();
             var CTR = BUS_CTR.Instance.Get();
             var CTRValue = 1;
             if (CTR != null)
@@ -131,7 +133,7 @@ namespace QuocLinhAPI.Controllers
                             TaskId = Convert.ToInt32(objTask["task_id"]);
                         if (TaskId > 0)
                         {
-                                bool IsNotFound = true;
+                                bool IsNoResult = true;
                             dynamic rsl = null;
                             url = Helpers.Instance.GetApiLink(item.TypeAPI.Value, item.Token, item.Container, start, end, item.UserIdApi.Value, TypeAppodeal.Output, TaskId);
                             var RowData = new List<DataApi>();
@@ -176,9 +178,12 @@ namespace QuocLinhAPI.Controllers
                                                 //TotalFillrate = RowData.Average(x => x.Fillrate),
                                                 InfoApiId = item.InfoApiId
                                             });
-                                            IsNotFound = false;
+                                            IsNoResult = false;
                                         }
-                                            
+                                        else
+                                        {
+                                            NoResult.Add(item.InfoApiId);
+                                        }   
                                         break;
                                     }
                                 }
@@ -186,9 +191,9 @@ namespace QuocLinhAPI.Controllers
                                     Thread.Sleep(2000);
                                 }
                             }
-                            if (IsNotFound)
+                            if (IsNoResult)
                             {
-                                NoData.Add(item.InfoApiId);
+                                NoResult.Add(item.InfoApiId);
                             }
                         }
                     }
@@ -201,7 +206,7 @@ namespace QuocLinhAPI.Controllers
                     {
                         if (Data != null && Data["status"] == 401)
                         {
-                            NoData.Add(item.InfoApiId);
+                            NoResult.Add(item.InfoApiId);
                         }
                     }
                     catch
@@ -283,16 +288,22 @@ namespace QuocLinhAPI.Controllers
                                 InfoApiId = item.InfoApiId
                             });
                         }
+                        else
+                        {
+                            NoResult.Add(item.InfoApiId);
+                        }
                     }
                 }
             }
-
+            NoData.NoResult = NoResult;
+            NoData.TimeOut = TimeOut;
             if (ListData != null && ListData.Any())
             {
+                
                 return Json(new
                 {
                     Status = 1,
-                    NoData = "",
+                    NoData = JsonConvert.SerializeObject(NoData),
                     Msg = JsonConvert.SerializeObject(ListData)
                 });
             }
@@ -300,7 +311,8 @@ namespace QuocLinhAPI.Controllers
             return Json(new
             {
                 Status = -1,
-                Msg = "Không lấy được dữ liệu."
+                Msg = "Không lấy được dữ liệu.",
+                NoData = JsonConvert.SerializeObject(NoData),
             });
         }
 

@@ -176,12 +176,12 @@
                     start: $('#Start').val(),
                     end: $('#End').val(),
                 }),
-                success: function (data) {
-                    if (data.Status == -1) {
-                        alert(data.Msg);
-                    }
-                    else {
-                        $('.rsdata').removeClass('hide').addClass('hide');
+                 success: function (data) {
+                     $('.rsdata tbody').html('');
+                     $('.rsdata').removeClass('hide').addClass('hide');
+                     $('.cleartotal h4').html('');
+                     $('.msgNodata').hide();
+                    if (data.Status == 1) {
                         var res = JSON.parse(data.Msg);
                         //console.log(res);
                         $.each(res, function (i, data) {
@@ -196,6 +196,19 @@
                             if ($('#Clicks_' + data.InfoApiId).length) {
                                 $('#Clicks_' + data.InfoApiId).text(data.TotalClicks);
                             }
+                        });
+                    }
+                    var NoData = JSON.parse(data.NoData);
+                    if (NoData.NoResult) {
+                        $.each(NoData.NoResult, function (i, data) {
+                            $('#nodata_' + data).html("<h3>Chưa tìm thấy dữ liệu từ API</h3>").show();
+                            $('#api_' + data).removeClass('hide');
+                        });
+                    }
+                    if (NoData.Timeout) {
+                        $.each(NoData.NoResult, function (i, data) {
+                            $('#nodata_' + data).html("<h3>Kết nối tới API Timeout</h3>").show();
+                            $('#api_' + data).removeClass('hide');
                         });
                     }
                 },
@@ -288,6 +301,8 @@
                         <div id="loading">
                             <span class="throbber"></span> Đang xử lý, vui lòng chờ
                         </div>
+                        <div class="clearfix"></div>
+                        
                     </div>
                 </div>
             </div>
@@ -308,9 +323,13 @@
                                 }
 
                             </div>
+                            <div class="alert alert-info msgNodata" id="nodata_@item.InfoApiId" style="display: none;">
+                            </div>
+                            <div class="alert alert-danger msgNodata" id="timeout_@item.InfoApiId" style="display: none;">
+                            </div>
                             @if (item.Impression == 1 || IsAdmin)
                             {
-                                <div class="row">
+                                <div class="row cleartotal">
                                     <h5 class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
                                         Total Impression:
                                     </h5>
@@ -320,7 +339,7 @@
 
                             @if (item.Revenues == 1 || IsAdmin)
                             {
-                                <div class="row">
+                                <div class="row cleartotal">
                                     <h5 class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
                                         Total Revenues:
                                     </h5>
@@ -330,14 +349,14 @@
 
                             @if (item.Click == 1 || IsAdmin)
                             {
-                                <div class="row">
+                                <div class="row cleartotal">
                                     <h5 class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
                                         Total Clicks:
                                     </h5>
                                     <h4 class="col-md-4 col-sm-4 col-xs-12 text text-success" id="Clicks_@item.InfoApiId"></h4>
                                 </div>
                             }
-                            
+
                             <div class="x_content">
                                 <table id="listing" class="table table-striped table-bordered bulk_action">
                                     <thead>

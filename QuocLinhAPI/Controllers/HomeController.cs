@@ -117,9 +117,9 @@ namespace QuocLinhAPI.Controllers
                             ListData.Add(new ListDataApi()
                             {
                                 Html = BuildStringData(RowData, item, IsAdmin),
-                                TotalImpressions = item.Impression == 1 ? RowData.Sum(x => x.Impressions) : 0,
-                                TotalClicks = item.Click == 1 ? RowData.Sum(x => x.Clicks) : 0,
-                                TotalRevenue = item.Revenues == 1 ? RowData.Sum(x => x.Revenue) : 0,
+                                TotalImpressions = item.Impression == 1 || IsAdmin ? RowData.Sum(x => x.Impressions) : 0,
+                                TotalClicks = item.Click == 1 || IsAdmin ? RowData.Sum(x => x.Clicks) : 0,
+                                TotalRevenue = item.Revenues == 1 || IsAdmin ? RowData.Sum(x => x.Revenue) : 0,
                                 //TotalFillrate = RowData.Average(x => x.Fillrate),
                                 InfoApiId = item.InfoApiId
                             });
@@ -172,9 +172,9 @@ namespace QuocLinhAPI.Controllers
                                             ListData.Add(new ListDataApi()
                                             {
                                                 Html = BuildStringData(RowData, item, IsAdmin),
-                                                TotalImpressions = item.Impression == 1 ? RowData.Sum(x => x.Impressions) : 0,
-                                                TotalClicks = item.Click == 1 ? RowData.Sum(x => x.Clicks) : 0,
-                                                TotalRevenue = item.Revenues == 1 ? RowData.Sum(x => x.Revenue) : 0,
+                                                TotalImpressions = item.Impression == 1 || IsAdmin ? RowData.Sum(x => x.Impressions) : 0,
+                                                TotalClicks = item.Click == 1 || IsAdmin ? RowData.Sum(x => x.Clicks) : 0,
+                                                TotalRevenue = item.Revenues == 1 || IsAdmin ? RowData.Sum(x => x.Revenue) : 0,
                                                 //TotalFillrate = RowData.Average(x => x.Fillrate),
                                                 InfoApiId = item.InfoApiId
                                             });
@@ -274,16 +274,16 @@ namespace QuocLinhAPI.Controllers
                         {
                             
                             foreach (var unit in RowData){
-                                unit.Revenue = unit.Revenue  * CTRValue;
+                                unit.Revenue = (unit.Revenue  * CTRValue) / 10;
                                 unit.CTR = unit.Impressions > 0 ? ((double)unit.Clicks / unit.Impressions) * 100 : 0;
                                 unit.Fillrate = unit.Fillrate / totalDays * 100;
                             }
                             ListData.Add(new ListDataApi()
                             {
                                 Html = BuildStringData(RowData, item, IsAdmin),
-                                TotalImpressions = item.Impression == 1 ? RowData.Sum(x => x.Impressions) : 0,
-                                TotalClicks = item.Click == 1? RowData.Sum(x => x.Clicks) : 0,
-                                TotalRevenue = item.Revenues == 1 ? RowData.Sum(x => x.Revenue): 0,
+                                TotalImpressions = item.Impression == 1 || IsAdmin ? RowData.Sum(x => x.Impressions) : 0,
+                                TotalClicks = item.Click == 1 || IsAdmin ? RowData.Sum(x => x.Clicks) : 0,
+                                TotalRevenue = item.Revenues == 1 || IsAdmin? RowData.Sum(x => x.Revenue): 0,
                                 //TotalFillrate = RowData.Average(x => x.Fillrate),
                                 InfoApiId = item.InfoApiId
                             });

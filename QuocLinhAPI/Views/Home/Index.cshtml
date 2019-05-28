@@ -191,7 +191,7 @@
                                 $('#Impression_' + data.InfoApiId).text(data.TotalImpressions);
                             }
                             if ($('#Revenues_' + data.InfoApiId).length) {
-                                $('#Revenues_' + data.InfoApiId).text(data.TotalRevenue);
+                                $('#Revenues_' + data.InfoApiId).text(data.TotalRevenue.toFixed(2));
                             }
                             if ($('#Clicks_' + data.InfoApiId).length) {
                                 $('#Clicks_' + data.InfoApiId).text(data.TotalClicks);

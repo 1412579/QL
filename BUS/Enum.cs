@@ -25,7 +25,7 @@ namespace BUS
         public int Clicks { get; set; }
         public double CTR { get; set; }
         public int Views { get; set; }
-        public int Revenue { get; set; }
+        public double Revenue { get; set; }
         public double Ecpm { get; set; }
     }
 
@@ -35,7 +35,7 @@ namespace BUS
         public string Html { get; set; }
         public int TotalImpressions { get; set; }
         public int TotalClicks { get; set; }
-        public int TotalRevenue { get; set; }
+        public double TotalRevenue { get; set; }
         public double TotalFillrate { get; set; }
         public int InfoApiId { get; set; }
     }

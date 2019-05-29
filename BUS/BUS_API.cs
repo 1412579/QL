@@ -44,6 +44,24 @@ namespace BUS
             return ctx_library.Instance.GetAll<InfoApi>().ToList();
         }
 
+        public List<InfoApi> GetAllDistinct()
+        {
+            var lst = ctx_library.Instance.GetAll<InfoApi>().ToList();
+            if(lst != null && lst.Any())
+            {
+                var rsl = new List<InfoApi>();
+                foreach(var item in lst)
+                {
+                    if(!rsl.Any(x => x.Token == item.Token && x.Container == item.Container))
+                    {
+                        rsl.Add(item);
+                    }
+                }
+                return rsl;
+            }
+            return null;
+        }
+
         public List<InfoApi> GetAllByUserId(int userApiId)
         {
             return ctx_library.Instance.GetAll<InfoApi>().Where(c => c.UserId == userApiId).ToList();

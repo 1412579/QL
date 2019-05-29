@@ -20,7 +20,7 @@ namespace QuocLinhAPI.Controllers
             var model = new List<InfoApi>();
             if (user.Role == (int)Role.User)
                 model = BUS_API.Instance.GetAllByUserId(user.UserId);
-            else model = BUS_API.Instance.GetAll();
+            else model = BUS_API.Instance.GetAllDistinct();
             return View(model);
         }
 
@@ -70,7 +70,7 @@ namespace QuocLinhAPI.Controllers
                 model = BUS_API.Instance.GetAllByUserId(user.UserId);
             else
             {
-                model = BUS_API.Instance.GetAll();
+                model = BUS_API.Instance.GetAllDistinct();
                 if (!string.IsNullOrEmpty(ListSelected) && ListSelected != "null")
                     model = model.Where(x => ListSelected.IndexOf(x.InfoApiId.ToString()) >= 0).ToList();
 
@@ -81,10 +81,10 @@ namespace QuocLinhAPI.Controllers
             var TimeOut = new List<int>();
             var NoResult = new List<int>();
             var CTR = BUS_CTR.Instance.Get();
-            var CTRValue = 1;
+            var CTRValue = 1.0;
             if (CTR != null)
             {
-                CTRValue = CTR.Value;
+                CTRValue = Convert.ToDouble(CTR.Value) / 100;
             }
             foreach (var item in model)
             {

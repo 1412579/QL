@@ -21,6 +21,7 @@
 
 @section js{
     <script>
+        var IsLoading = false;
         function Confirm(text, event) {
             var r = confirm(text);
             if (r == false) {
@@ -50,6 +51,10 @@
             })
         });
         function updateUser() {
+            if (IsLoading) {
+                alert("Hệ thống đang xử lý, vui lòng không click nhiều!");
+                return;
+            }
             //var username = $('#UserName').val();
             var password = $('#Password').val();
             var cpassword = $('#ConfirmPassword').val();
@@ -77,6 +82,7 @@
                 cpassMsg.text("Xác nhận mật khẩu không đúng.");
                 return;
             }
+            IsLoading = true;
             $.ajax({
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
@@ -96,11 +102,18 @@
                 },
                 fail: function (xhr, textStatus, errorThrown) {
                     alert('Đã xảy ra lỗi, vui lòng thử lại sau.');
-                }
+                },
+                complete: function () {
+                    IsLoading = false;
+                } 
             });
         }
 
         function createAPI() {
+            if (IsLoading) {
+                alert("Hệ thống đang xử lý, vui lòng không click nhiều!");
+                return;
+            }
             //var username = $('#UserName').val();
             var TypeAPI = $('#TypeAPI').val();
             var Token = $('#Token').val();
@@ -134,6 +147,7 @@
             if (flag) {
                 return;
             }
+            IsLoading = true;
             var UserId = $('#UserId').val();
             $.ajax({
                 type: 'POST',
@@ -170,6 +184,9 @@
                 },
                 fail: function (xhr, textStatus, errorThrown) {
                     alert('Đã xảy ra lỗi, vui lòng thử lại sau.');
+                },
+                complete: function () {
+                    IsLoading = false;
                 }
             });
         }
@@ -194,11 +211,19 @@
                 },
                 fail: function (xhr, textStatus, errorThrown) {
                     alert('Đã xảy ra lỗi, vui lòng thử lại sau.');
+                },
+                complete: function () {
+                    IsLoading = false;
                 }
             });
         }
 
         function getApi(InfoApiId) {
+            if (IsLoading) {
+                alert("Hệ thống đang xử lý, vui lòng không click nhiều!");
+                return;
+            }
+            IsLoading = true;
             $.ajax({
                 type: 'POST',
                 contentType: "application/json; charset=utf-8",
@@ -276,11 +301,18 @@
                 },
                 fail: function (xhr, textStatus, errorThrown) {
                     alert('Đã xảy ra lỗi, vui lòng thử lại sau.');
+                },
+                complete: function () {
+                    IsLoading = false;
                 }
             });
         }
 
         function editAPI() {
+            if (IsLoading) {
+                alert("Hệ thống đang xử lý, vui lòng không click nhiều!");
+                return;
+            }
             //var username = $('#UserName').val();
             var TypeAPI = $('#eTypeAPI').val();
             var Token = $('#eToken').val();
@@ -314,6 +346,7 @@
             if (flag) {
                 return;
             }
+            IsLoading = true;
             var UserId = $('#UserId').val();
             $.ajax({
                 type: 'POST',
@@ -350,6 +383,9 @@
                 },
                 fail: function (xhr, textStatus, errorThrown) {
                     alert('Đã xảy ra lỗi, vui lòng thử lại sau.');
+                },
+                complete: function () {
+                    IsLoading = false;
                 }
             });
         }

@@ -28,6 +28,7 @@ namespace BUS
         public string DisplayName { get; set; }
         public Nullable<int> Role { get; set; }
         public Nullable<int> IsDeleted { get; set; }
+        public Nullable<int> RevVal { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<InfoApi> InfoApis { get; set; }

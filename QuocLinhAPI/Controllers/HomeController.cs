@@ -80,11 +80,10 @@ namespace QuocLinhAPI.Controllers
             var NoData = new NoData();
             var TimeOut = new List<int>();
             var NoResult = new List<int>();
-            var CTR = BUS_CTR.Instance.Get();
             var CTRValue = 1.0;
-            if (CTR != null)
+            if (!IsAdmin)
             {
-                CTRValue = Convert.ToDouble(CTR.Value) / 100;
+                CTRValue = user.RevVal.Value * 1.0 / 100; 
             }
             foreach (var item in model)
             {
@@ -274,9 +273,10 @@ namespace QuocLinhAPI.Controllers
                         {
                             
                             foreach (var unit in RowData){
-                                unit.Revenue = (unit.Revenue  * CTRValue) / 10;
+                                unit.Revenue = (unit.Revenue  * CTRValue) / 100;
                                 unit.CTR = unit.Impressions > 0 ? ((double)unit.Clicks / unit.Impressions) * 100 : 0;
                                 unit.Fillrate = unit.Fillrate / totalDays * 100;
+                                unit.Ecpm = unit.Revenue / unit.Impressions * 1000;
                             }
                             ListData.Add(new ListDataApi()
                             {
@@ -336,15 +336,15 @@ namespace QuocLinhAPI.Controllers
                     stringRsl += "<td>" + item.Impressions + "</td>";
                     stringRsl += "<td>" + item.Clicks + "</td>";
                     stringRsl += "<td>" + item.Fillrate.ToString("0.##") + "</td>";
-                    stringRsl += "<td>" + item.Revenue + "</td>";
+                    stringRsl += "<td>" + item.Revenue + "$</td>";
                     stringRsl += "<td>" + item.CTR.ToString("0.##") + "</td>";
                     if((API)Info.TypeAPI == API.Appodeal)
                     {
-                        stringRsl += "<td>" + item.Revenue + "</td>";
+                        stringRsl += "<td>" + item.Requests + "</td>";
                         stringRsl += "<td>" + item.Fills + "</td>";
                         stringRsl += "<td>" + item.Views + "</td>";
-                        stringRsl += "<td>" + item.Ecpm.ToString("0.##") + "</td>";
                     }
+                    stringRsl += "<td>" + item.Ecpm.ToString("0.##") + "</td>";
                     stringRsl += "</tr>";
                 }
                 else
@@ -358,7 +358,7 @@ namespace QuocLinhAPI.Controllers
                     if (Info.Fillrate == 1)
                         stringRsl += "<td>" + item.Fillrate.ToString("0.##") + "</td>";
                     if (Info.Revenues == 1)
-                        stringRsl += "<td>" + item.Revenue + "</td>";
+                        stringRsl += "<td>" + item.Revenue + "$ </td>";
                     if (Info.CTR == 1)
                         stringRsl += "<td>" + item.CTR.ToString("0.##") + "</td>";
                     if ((API)Info.TypeAPI == API.Appodeal)
@@ -369,9 +369,10 @@ namespace QuocLinhAPI.Controllers
                             stringRsl += "<td>" + item.Fills + "</td>";
                         if (Info.Views == 1)
                             stringRsl += "<td>" + item.Views + "</td>";
-                        if (Info.Ecpm == 1)
-                            stringRsl += "<td>" + item.Ecpm.ToString("0.##") + "</td>";
+                        
                     }
+                    if (Info.Ecpm == 1)
+                        stringRsl += "<td>" + item.Ecpm.ToString("0.##") + "</td>";
                     stringRsl += "</tr>";
                 }
             }

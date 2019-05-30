@@ -140,6 +140,42 @@ namespace QuocLinhAPI.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult UpdateRev(int UserId, int Rev)
+        {
+            if (!IsAdminLogged())
+                return Json(new
+                {
+                    Status = -1,
+                    Msg = "Không có quyền truy cập."
+                });
+            if(Rev <= 0)
+            {
+                return Json(new
+                {
+                    Status = -1,
+                    Msg = "Hệ số phải > 0."
+                });
+            }
+            var IsValid = BUS_User.Instance.UpdateRev(UserId, Rev);
+            if (IsValid > 0)
+            {
+                return Json(new
+                {
+                    Status = 1,
+                    Msg = ""
+                });
+            }
+            else
+            {
+                return Json(new
+                {
+                    Status = -1,
+                    Msg = "Không cập nhật được thông tin tài khoản, vui lòng thử lại sau."
+                });
+            }
+        }
+
         public ActionResult UserEdit(string UserName, string opassword, string password)
         {
             return View();

@@ -390,6 +390,44 @@
             });
         }
 
+        function updateRev() {
+            if (IsLoading) {
+                alert("Hệ thống đang xử lý, vui lòng không click nhiều!");
+                return;
+            }
+
+            IsLoading = true;
+            var UserId = $('#UserId').val();
+            $.ajax({
+                type: 'POST',
+                contentType: "application/json; charset=utf-8",
+                dataType: 'json',
+                async: true,
+                url: '/Login/UpdateRev',
+                data: JSON.stringify({
+                    UserId: UserId,
+                    Rev: parseInt($('#Rev').val())
+                  
+                }),
+                success: function (data) {
+                    if (data.Status == -1) {
+                        alert(data.Msg);
+                    }
+                    else {
+                        alert('Đã cập nhật hệ số thành công.');
+                        reloadLisstApi(UserId);
+                        //location.reload(false);
+                        //window.location.href = '/';
+                    }
+                },
+                fail: function (xhr, textStatus, errorThrown) {
+                    alert('Đã xảy ra lỗi, vui lòng thử lại sau.');
+                },
+                complete: function () {
+                    IsLoading = false;
+                }
+            });
+        }
 
         function showChangeInfo(e) {
             $(e).hide();
@@ -442,6 +480,13 @@
                                         <input class="form-control col-md-7 col-xs-12 text-box single-line" id="Password" name="Password" required="required" type="password" value="">
                                         <small class="text text-danger" id="passMsg"></small>
                                     </div>
+                                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
+                                        Hệ số Rev
+                                    </label>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <input class="form-control col-md-7 col-xs-12 text-box single-line" id="Rev" required="required" type="text" value="@(Model.RevVal)">
+                                        <small class="text text-danger" id="revMsg"></small>
+                                    </div>
                                 </div>
                                 <div class="form-group">
                                     <label class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
@@ -450,6 +495,12 @@
                                     <div class="col-md-4 col-sm-4 col-xs-6">
                                         <input class="form-control col-md-7 col-xs-12 text-box single-line" id="ConfirmPassword" name="ConfirmPassword" required="required" type="password" value="">
                                         <small class="text text-danger" id="cpassMsg"></small>
+                                    </div>
+                                    <label class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
+                                        
+                                    </label>
+                                    <div class="col-md-4 col-sm-4 col-xs-12">
+                                        <a href="javascript:" class="btn btn-success" onclick="return updateRev();">Cập nhật hệ số</a>
                                     </div>
                                 </div>
                                 <div class="form-group">
@@ -622,12 +673,13 @@
                             <div class="col-md-1 col-sm-1 col-xs-6">
                                 <input class="checkbox-size" id="Views" name="Views" required="required" type="checkbox" value="">
                             </div>
-                            <label class="control-label col-md-2 col-sm-2 col-xs-6" for="last-name">
-                                Ecpm
-                            </label>
-                            <div class="col-md-1 col-sm-1 col-xs-6">
-                                <input class="checkbox-size" id="Ecpm" name="Ecpm" required="required" type="checkbox" value="">
-                            </div>
+
+                        </div>
+                        <label class="control-label col-md-2 col-sm-2 col-xs-6" for="last-name">
+                            Ecpm
+                        </label>
+                        <div class="col-md-1 col-sm-1 col-xs-6">
+                            <input class="checkbox-size" id="Ecpm" name="Ecpm" required="required" type="checkbox" value="">
                         </div>
                     </div>
                 </div>
@@ -746,12 +798,13 @@
                             <div class="col-md-1 col-sm-1 col-xs-6">
                                 <input class="checkbox-size" id="eViews" name="eViews" required="required" type="checkbox" value="">
                             </div>
-                            <label class="control-label col-md-2 col-sm-2 col-xs-6" for="last-name">
-                                Ecpm
-                            </label>
-                            <div class="col-md-1 col-sm-1 col-xs-6">
-                                <input class="checkbox-size" id="eEcpm" name="eEcpm" required="required" type="checkbox" value="">
-                            </div>
+
+                        </div>
+                        <label class="control-label col-md-2 col-sm-2 col-xs-6" for="last-name">
+                            Ecpm
+                        </label>
+                        <div class="col-md-1 col-sm-1 col-xs-6">
+                            <input class="checkbox-size" id="eEcpm" name="eEcpm" required="required" type="checkbox" value="">
                         </div>
                     </div>
                 </div>

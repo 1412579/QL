@@ -97,6 +97,19 @@ namespace BUS
             return 0;
         }
 
+        public int UpdateRev(int UserId, int Rev)
+        {
+            try
+            {
+                var dto = ctx_library.Instance.GetByID<User>(UserId);
+                dto.RevVal = Rev;
+                ctx_library.Instance.Update<User>(dto, UserId);
+                return 1;
+            }
+            catch { }
+            return 0;
+        }
+
         public static byte[] encryptData(string data)
         {
             System.Security.Cryptography.MD5CryptoServiceProvider md5Hasher = new System.Security.Cryptography.MD5CryptoServiceProvider();

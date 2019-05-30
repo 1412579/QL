@@ -29,7 +29,6 @@ namespace BUS
         public Nullable<int> Fills { get; set; }
         public Nullable<int> Views { get; set; }
         public Nullable<int> Ecpm { get; set; }
-    
         [JsonIgnore]
         public virtual User User { get; set; }
     }

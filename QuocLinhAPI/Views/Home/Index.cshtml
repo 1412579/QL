@@ -191,7 +191,7 @@
                                 $('#Impression_' + data.InfoApiId).text(data.TotalImpressions);
                             }
                             if ($('#Revenues_' + data.InfoApiId).length) {
-                                $('#Revenues_' + data.InfoApiId).text(data.TotalRevenue.toFixed(2));
+                                $('#Revenues_' + data.InfoApiId).text(data.TotalRevenue.toFixed(2) + "$");
                             }
                             if ($('#Clicks_' + data.InfoApiId).length) {
                                 $('#Clicks_' + data.InfoApiId).text(data.TotalClicks);
@@ -371,7 +371,14 @@
                                                 <th>Fillrate</th>
                                                 <th>Revenues</th>
                                                 <th>CTR</th>
-
+                                                if ((API)item.TypeAPI == API.Appodeal)
+                                                {
+                                                    <th>Requests</th>
+                                                    <th>Fills</th>
+                                                    <th>Views</th>
+                                                    <th>Ecpm</th>
+                                                }
+                                                <th>Ecpm</th>
                                             }
                                             else
                                             {
@@ -396,14 +403,27 @@
                                                 {
                                                     <th>CTR</th>
                                                 }
+                                                if ((API)item.TypeAPI == API.Appodeal)
+                                                {
+                                                    if (item.Requests == 1)
+                                                    {
+                                                        <th>Requests</th>
+                                                    }
+                                                    if (item.Fills == 1)
+                                                    {
+                                                        <th>Fills</th>
+                                                    }
+                                                    if (item.Views == 1)
+                                                    {
+                                                        <th>Views</th>
+                                                    }
+                                                }
+                                                if (item.Ecpm == 1)
+                                                {
+                                                    <th>Ecpm</th>
+                                                }
                                             }
-                                            @if ((API)item.TypeAPI == API.Appodeal)
-                                            {
-                                                <th>Requests</th>
-                                                <th>Fills</th>
-                                                <th>Views</th>
-                                                <th>Ecpm</th>
-                                            }
+
                                         </tr>
                                     </thead>
                                     <tbody></tbody>

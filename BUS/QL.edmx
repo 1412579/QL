@@ -24,6 +24,7 @@
           <Property Name="Fills" Type="int" />
           <Property Name="Views" Type="int" />
           <Property Name="Ecpm" Type="int" />
+          <Property Name="ApiName" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="TrickAvarage">
           <Key>
@@ -92,6 +93,7 @@
           <Property Name="Views" Type="Int32" />
           <Property Name="Ecpm" Type="Int32" />
           <NavigationProperty Name="User" Relationship="Self.FK__InfoApi__UserId__1273C1CD" FromRole="InfoApi" ToRole="Users" />
+          <Property Name="ApiName" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
         </EntityType>
         <EntityType Name="TrickAvarage">
           <Key>
@@ -146,6 +148,7 @@
           <EntitySetMapping Name="InfoApis">
             <EntityTypeMapping TypeName="QLModel.InfoApi">
               <MappingFragment StoreEntitySet="InfoApi">
+                <ScalarProperty Name="ApiName" ColumnName="ApiName" />
                 <ScalarProperty Name="InfoApiId" ColumnName="InfoApiId" />
                 <ScalarProperty Name="Token" ColumnName="Token" />
                 <ScalarProperty Name="TypeAPI" ColumnName="TypeAPI" />

@@ -119,6 +119,7 @@ namespace QuocLinhAPI.Controllers
                                 TotalImpressions = item.Impression == 1 || IsAdmin ? RowData.Sum(x => x.Impressions) : 0,
                                 TotalClicks = item.Click == 1 || IsAdmin ? RowData.Sum(x => x.Clicks) : 0,
                                 TotalRevenue = item.Revenues == 1 || IsAdmin ? RowData.Sum(x => x.Revenue) : 0,
+                                TotalEcpm = item.Ecpm == 1 || IsAdmin ? RowData.Sum(x => x.Ecpm) : 0,
                                 //TotalFillrate = RowData.Average(x => x.Fillrate),
                                 InfoApiId = item.InfoApiId
                             });
@@ -168,12 +169,26 @@ namespace QuocLinhAPI.Controllers
                                         }
                                         if (RowData != null && RowData.Any())
                                         {
+                                            if(item.ApiName != RowData[0].Name)
+                                            {
+                                                try
+                                                {
+                                                    var updateName = item;
+                                                    updateName.ApiName = RowData[0].Name;
+                                                    BUS_API.Instance.Update(updateName);
+                                                }
+                                                catch
+                                                {
+
+                                                }
+                                            }
                                             ListData.Add(new ListDataApi()
                                             {
                                                 Html = BuildStringData(RowData, item, IsAdmin),
                                                 TotalImpressions = item.Impression == 1 || IsAdmin ? RowData.Sum(x => x.Impressions) : 0,
                                                 TotalClicks = item.Click == 1 || IsAdmin ? RowData.Sum(x => x.Clicks) : 0,
                                                 TotalRevenue = item.Revenues == 1 || IsAdmin ? RowData.Sum(x => x.Revenue) : 0,
+                                                TotalEcpm = item.Ecpm == 1 || IsAdmin ? RowData.Sum(x => x.Ecpm) : 0,
                                                 //TotalFillrate = RowData.Average(x => x.Fillrate),
                                                 InfoApiId = item.InfoApiId
                                             });
@@ -271,12 +286,33 @@ namespace QuocLinhAPI.Controllers
                         }
                         if(RowData!=null && RowData.Any())
                         {
-                            
+                            try
+                            {
+                                if (string.IsNullOrEmpty(item.ApiName))
+                                {
+                                    var name = Helpers.Instance.GetJSON("https://api.adincube.com/api/1.3/public/inventories?auth_token=" + item.Token);
+                                    if (name != null)
+                                    {
+                                        foreach(var aname in name)
+                                        {
+                                            if(aname["id"].ToString() == item.Container)
+                                            {
+                                                var updateName = item;
+                                                updateName.ApiName = aname["name"];
+                                                BUS_API.Instance.Update(updateName);
+                                                break;
+                                            }
+                                        }
+                                    }
+                                }
+                            }
+                            catch { }
+                           
                             foreach (var unit in RowData){
                                 unit.Revenue = (unit.Revenue  * CTRValue) / 100;
                                 unit.CTR = unit.Impressions > 0 ? ((double)unit.Clicks / unit.Impressions) * 100 : 0;
                                 unit.Fillrate = unit.Fillrate / totalDays * 100;
-                                unit.Ecpm = unit.Revenue / unit.Impressions * 1000;
+                                unit.Ecpm = unit.Impressions > 0 ?  unit.Revenue / unit.Impressions * 1000 : 0;
                             }
                             ListData.Add(new ListDataApi()
                             {
@@ -284,6 +320,7 @@ namespace QuocLinhAPI.Controllers
                                 TotalImpressions = item.Impression == 1 || IsAdmin ? RowData.Sum(x => x.Impressions) : 0,
                                 TotalClicks = item.Click == 1 || IsAdmin ? RowData.Sum(x => x.Clicks) : 0,
                                 TotalRevenue = item.Revenues == 1 || IsAdmin? RowData.Sum(x => x.Revenue): 0,
+                                TotalEcpm = item.Ecpm == 1 || IsAdmin ? RowData.Sum(x => x.Ecpm) : 0,
                                 //TotalFillrate = RowData.Average(x => x.Fillrate),
                                 InfoApiId = item.InfoApiId
                             });

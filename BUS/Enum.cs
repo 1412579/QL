@@ -37,6 +37,8 @@ namespace BUS
         public int TotalClicks { get; set; }
         public double TotalRevenue { get; set; }
         public double TotalFillrate { get; set; }
+        public double TotalEcpm { get; set; }
+
         public int InfoApiId { get; set; }
     }
 

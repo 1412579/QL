@@ -196,6 +196,9 @@
                             if ($('#Clicks_' + data.InfoApiId).length) {
                                 $('#Clicks_' + data.InfoApiId).text(data.TotalClicks);
                             }
+                            if ($('#Ecpm_' + data.InfoApiId).length) {
+                                $('#Ecpm_' + data.InfoApiId).text(data.TotalEcpm.toFixed(2));
+                            }
                         });
                     }
                     var NoData = JSON.parse(data.NoData);
@@ -359,6 +362,16 @@
                                 </div>
                             }
 
+                            @if (item.Ecpm == 1 || IsAdmin)
+                            {
+                                <div class="row cleartotal">
+                                    <h5 class="control-label col-md-2 col-sm-2 col-xs-12" for="last-name">
+                                        Total Ecpm:
+                                    </h5>
+                                    <h4 class="col-md-4 col-sm-4 col-xs-12 text text-success" id="Ecpm_@item.InfoApiId"></h4>
+                                </div>
+                            }
+
                             <div class="x_content">
                                 <table id="listing" class="table table-striped table-bordered bulk_action">
                                     <thead>
@@ -376,7 +389,6 @@
                                                     <th>Requests</th>
                                                     <th>Fills</th>
                                                     <th>Views</th>
-                                                    <th>Ecpm</th>
                                                 }
                                                 <th>Ecpm</th>
                                             }

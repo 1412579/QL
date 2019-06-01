@@ -33,6 +33,8 @@
                                     <th>ID</th>
                                     <th>Tên tài khoản</th>
                                     <th>Loại tài khoản</th>
+                                    <th>Network</th>
+                                    <th>Application</th>
                                     <th>Thao tác</th>
                                 </tr>
                             </thead>
@@ -46,6 +48,24 @@
                                             <td>@item.UserId</td>
                                             <td>@item.UserName</td>
                                             <td>@((Role)item.Role)</td>
+                                            <td>
+                                                @if (item.InfoApis != null && item.InfoApis.Any())
+                                                {
+                                                    foreach (var api in item.InfoApis)
+                                                    {
+                                                        <p>@((API)api.TypeAPI)</p>
+                                                    }
+                                                }
+                                            </td>
+                                            <td>
+                                                @if (item.InfoApis != null && item.InfoApis.Any())
+                                                {
+                                                    foreach (var api in item.InfoApis)
+                                                    {
+                                                        <p>@(@api.Container.Substring(0, 10) + "...") - @api.ApiName</p>
+                                                    }
+                                                }
+                                            </td>
                                             <td>@Html.ActionLink("Thông tin", "Edit", "Login", new { userid = item.UserId } ,new { @class="btn btn-sm btn-primary" })</td>
                                         </tr>
                                     }

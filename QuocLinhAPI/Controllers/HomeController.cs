@@ -309,10 +309,11 @@ namespace QuocLinhAPI.Controllers
                             catch { }
                            
                             foreach (var unit in RowData){
-                                unit.Revenue = (unit.Revenue  * CTRValue) / 100;
+                                unit.Revenue = unit.Revenue / 100;
+                                unit.Ecpm = unit.Impressions > 0 ?  unit.Revenue / unit.Impressions * 1000 : 0;
+                                unit.Revenue = unit.Revenue  * CTRValue;
                                 unit.CTR = unit.Impressions > 0 ? ((double)unit.Clicks / unit.Impressions) * 100 : 0;
                                 unit.Fillrate = unit.Fillrate / totalDays * 100;
-                                unit.Ecpm = unit.Impressions > 0 ?  unit.Revenue / unit.Impressions * 1000 : 0;
                             }
                             ListData.Add(new ListDataApi()
                             {

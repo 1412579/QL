@@ -65,15 +65,15 @@ namespace BUS
             {
                 if(whatapi == TypeAppodeal.Start)
                 {
-                    rsl = $"https://www.appodeal.com/api/v2/stats_api?api_key={Token}&user_id={UserApiId}&date_from={Start}&date_to={End}&detalisation[]=app&detalisation[]=country";
+                    rsl = $"https://api-services.appodeal.com/api/v2/stats_api?api_key={Token}&user_id={UserApiId}&date_from={Start}&date_to={End}&detalisation[]=app&detalisation[]=country";
                 }
                 else if (whatapi == TypeAppodeal.Status)
                 {
-                    rsl = $"https://www.appodeal.com/api/v2/check_status?api_key={Token}&user_id={UserApiId}&task_id={taskId}";
+                    rsl = $"https://api-services.appodeal.com/api/v2/check_status?api_key={Token}&user_id={UserApiId}&task_id={taskId}";
                 }
                 else if (whatapi == TypeAppodeal.Output)
                 {
-                    rsl = $"https://www.appodeal.com/api/v2/output_result?api_key={Token}&user_id={UserApiId}&task_id={taskId}";
+                    rsl = $"https://api-services.appodeal.com/api/v2/output_result?api_key={Token}&user_id={UserApiId}&task_id={taskId}";
                 }
             }
             else if(TypeAPI == 1)

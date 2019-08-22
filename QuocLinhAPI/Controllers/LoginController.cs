@@ -101,7 +101,8 @@ namespace QuocLinhAPI.Controllers
                 {
                     UserName = username,
                     Password = password,
-                    Role = IsAdmin
+                    Role = IsAdmin,
+                    RevVal = 1
                 };
                 var id = BUS_User.Instance.Insert(dto);
                 return Json(new
